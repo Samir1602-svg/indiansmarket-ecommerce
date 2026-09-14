@@ -2,28 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indians Market: Online Shopping India - Mobiles, Laptops, Audio & More</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Indians Market: Online Shopping India - Mobiles, Laptops, Fashion, Kitchen & More</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Open Sans', Arial, sans-serif; }
+    body { font-family: 'Open Sans', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
     .amazon-gold-btn { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; }
     .amazon-gold-btn:hover { background: linear-gradient(to bottom, #f5d78e, #eeb933); }
     .amazon-buy-btn { background: linear-gradient(to bottom, #ffa41c, #ff8f00); border: 1px solid #ff8f00; }
     .amazon-buy-btn:hover { background: linear-gradient(to bottom, #f39912, #e57f00); }
-    .toast-animate { animation: slideDown 0.3s ease-out forwards; }
-    @keyframes slideDown {
-      0% { transform: translateY(-100%); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .carousel-transition { transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
   </style>
 </head>
-<body class="bg-[#eaeded] text-[#0f1111] min-h-screen flex flex-col antialiased relative">
+<body class="bg-[#eaeded] text-[#0f1111] min-h-screen flex flex-col antialiased relative pb-16 md:pb-0">
 
   <!-- IN-APP TOAST NOTIFICATION -->
-  <div id="toastNotification" class="fixed top-4 right-4 z-50 hidden toast-animate">
+  <div id="toastNotification" class="fixed top-4 right-4 z-50 hidden">
     <div class="bg-white border-l-4 border-emerald-600 shadow-2xl rounded-r px-4 py-3 flex items-center gap-3 border border-gray-200">
       <div class="h-6 w-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">✓</div>
       <div>
@@ -35,42 +33,42 @@
 
   <!-- TOP PRIMARY NAVIGATION (Amazon #131921) -->
   <header class="bg-[#131921] text-white sticky top-0 z-40 shadow-md">
-    <div class="max-w-[1550px] mx-auto px-4 py-2 flex items-center justify-between gap-4">
+    <div class="max-w-[1550px] mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- BRAND LOGO WITH AMAZON-STYLE CURVE (Click = Back to Home) -->
-      <div class="flex items-center cursor-pointer border border-transparent hover:border-white p-1.5 rounded transition" onclick="navigateToHome()">
+      <div class="flex items-center cursor-pointer border border-transparent hover:border-white p-1 rounded transition" onclick="navigateToHome()">
         <div class="flex flex-col">
           <div class="flex items-baseline">
-            <span class="text-2xl font-black tracking-tight text-white">Indians<span class="text-[#febd69]">Market</span></span>
-            <span class="text-xs font-bold text-[#febd69] ml-0.5">.in</span>
+            <span class="text-xl sm:text-2xl font-black tracking-tight text-white">Indians<span class="text-[#febd69]">Market</span></span>
+            <span class="text-[10px] sm:text-xs font-bold text-[#febd69] ml-0.5">.in</span>
           </div>
-          <!-- Amazon Smile Curved Indicator -->
-          <svg class="w-24 h-2 -mt-1" viewBox="0 0 100 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Amazon Smile Curved Accent -->
+          <svg class="w-20 sm:w-24 h-2 -mt-1" viewBox="0 0 100 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 4C28 14 72 14 95 4" stroke="#febd69" stroke-width="3" stroke-linecap="round"/>
             <path d="M91 2L96 5L92 9" stroke="#febd69" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
       </div>
 
-      <!-- Location Pin -->
-      <div onclick="openLocationModal()" class="flex flex-col border border-transparent hover:border-white p-1.5 rounded cursor-pointer leading-tight">
+      <!-- Location Pin (Desktop) -->
+      <div onclick="openLocationModal()" class="hidden md:flex flex-col border border-transparent hover:border-white p-1.5 rounded cursor-pointer leading-tight">
         <span id="locHeaderCity" class="text-[11px] text-gray-300">Deliver to New Delhi 110001</span>
         <span class="text-xs font-bold flex items-center gap-0.5">📍 Update location</span>
       </div>
 
-      <!-- Search Component -->
-      <div class="flex flex-1 max-w-3xl mx-2">
+      <!-- Desktop Search Bar -->
+      <div class="hidden md:flex flex-1 max-w-3xl mx-2">
         <select id="searchCategory" onchange="filterCategory(this.value)" class="bg-[#e6e6e6] text-[#0f1111] text-xs font-semibold px-2.5 rounded-l border-r border-gray-400 focus:outline-none cursor-pointer">
           <option value="All">All Categories</option>
-          <option value="Electronics">Mobiles & Electronics</option>
-          <option value="Audio">Audio & Headphones</option>
-          <option value="Laptops">Laptops & Computers</option>
-          <option value="Wearables">Smartwatches</option>
-          <option value="Gaming">Gaming Store</option>
-          <option value="Photography">Cameras</option>
+          <option value="Electronics">Mobiles & Tech</option>
+          <option value="Fashion">Fashion & Apparel</option>
+          <option value="HomeKitchen">Home & Kitchen</option>
+          <option value="Grocery">Grocery Essentials</option>
+          <option value="Fitness">Sports & Fitness</option>
+          <option value="Books">Books & Stationery</option>
         </select>
-        <input id="searchInput" onkeyup="handleSearchInput()" type="text" placeholder="Search authentic products, Apple, Sony, Logitech..." class="w-full bg-white text-black px-4 py-2 text-sm focus:outline-none" />
-        <button onclick="handleSearchInput()" class="bg-[#febd69] hover:bg-[#f3a847] text-black px-5 rounded-r font-bold">🔍</button>
+        <input id="searchInputDesktop" onkeyup="handleSearchInput(this.value)" type="text" placeholder="Search across 500+ Indian verified products, Apple, Levi's, Prestige..." class="w-full bg-white text-black px-4 py-2 text-sm focus:outline-none" />
+        <button class="bg-[#febd69] hover:bg-[#f3a847] text-black px-5 rounded-r font-bold">🔍</button>
       </div>
 
       <!-- Top Right Actions -->
@@ -114,55 +112,130 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobile Search Row -->
+    <div class="block md:hidden px-3 pb-2.5">
+      <div class="flex bg-white rounded overflow-hidden shadow-inner">
+        <input id="searchInputMobile" onkeyup="handleSearchInput(this.value)" type="text" placeholder="Search 500+ Indian marketplace products..." class="w-full px-3 py-2 text-xs text-black focus:outline-none" />
+        <button class="bg-[#febd69] px-4 text-black font-bold">🔍</button>
+      </div>
+    </div>
   </header>
 
-  <!-- SUBNAV BAR -->
-  <div class="bg-[#232f3e] text-white text-xs px-6 py-2 flex items-center gap-6 overflow-x-auto shadow-inner">
-    <button onclick="filterCategory('All')" class="font-bold flex items-center gap-1 hover:text-[#febd69]">☰ All Products</button>
-    <button onclick="filterCategory('Electronics')" class="hover:text-[#febd69]">Mobiles & Gadgets</button>
-    <button onclick="filterCategory('Audio')" class="hover:text-[#febd69]">Audio & Sound</button>
-    <button onclick="filterCategory('Laptops')" class="hover:text-[#febd69]">Laptops</button>
-    <button onclick="filterCategory('Wearables')" class="hover:text-[#febd69]">Smartwatches</button>
-    <button onclick="filterCategory('Gaming')" class="hover:text-[#febd69]">Gaming Store</button>
-    <button onclick="filterCategory('Photography')" class="hover:text-[#febd69]">Cameras</button>
-    <span class="text-gray-400 ml-auto hidden md:inline text-[11px]">⚡ Verified Marketplace Guarantee</span>
+  <!-- SUBNAV CATEGORIES BAR -->
+  <div class="bg-[#232f3e] text-white text-xs px-3 sm:px-6 py-2 flex items-center gap-5 overflow-x-auto no-scrollbar shadow-inner">
+    <button onclick="filterCategory('All')" class="font-bold flex items-center gap-1 hover:text-[#febd69] shrink-0">☰ All Products</button>
+    <button onclick="filterCategory('Electronics')" class="hover:text-[#febd69] shrink-0">Mobiles & Tech</button>
+    <button onclick="filterCategory('Fashion')" class="hover:text-[#febd69] shrink-0">Fashion & Apparel</button>
+    <button onclick="filterCategory('HomeKitchen')" class="hover:text-[#febd69] shrink-0">Home & Kitchen</button>
+    <button onclick="filterCategory('Grocery')" class="hover:text-[#febd69] shrink-0">Grocery & Pantry</button>
+    <button onclick="filterCategory('Fitness')" class="hover:text-[#febd69] shrink-0">Sports & Fitness</button>
+    <button onclick="filterCategory('Books')" class="hover:text-[#febd69] shrink-0">Books & Learning</button>
+    <span class="text-gray-400 ml-auto hidden lg:inline text-[11px]">⚡ 500+ Verified Domestic Marketplace SKUs</span>
   </div>
 
   <!-- VIEW 1: STOREFRONT -->
   <div id="viewStorefront" class="flex-grow flex flex-col">
-    <div class="relative bg-gradient-to-b from-gray-700 to-[#eaeded] py-5 px-4 mb-2">
-      <div class="max-w-[1500px] mx-auto bg-gradient-to-r from-slate-900 to-[#232f3e] text-white p-7 rounded-xl flex justify-between items-center shadow-md">
-        <div>
-          <span class="bg-[#febd69] text-black text-[11px] font-extrabold px-2.5 py-1 rounded uppercase tracking-wide">Indians Market Prime Days</span>
-          <h1 class="text-3xl font-extrabold mt-2">Up to 40% off Flagship Electronics</h1>
-          <p class="text-xs text-gray-300 mt-1">Direct from Authorized Indian Brand Sellers & Appario Retail.</p>
+    
+    <!-- ============================================== -->
+    <!-- AUTO & MANUAL MOVING HERO SALES BANNER -->
+    <!-- ============================================== -->
+    <div class="relative w-full overflow-hidden bg-gray-900 group">
+      <div id="carouselTrack" class="flex carousel-transition w-full">
+        
+        <!-- Slide 1: Electronics Mega Sale -->
+        <div onclick="filterCategory('Electronics')" class="min-w-full relative cursor-pointer">
+          <div class="h-48 sm:h-72 md:h-96 w-full bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 flex items-center px-6 sm:px-16 text-white">
+            <div class="max-w-xl space-y-2">
+              <span class="bg-[#febd69] text-black text-[10px] sm:text-xs font-black px-2.5 py-1 rounded uppercase tracking-wide">Indians Market Prime Days</span>
+              <h2 class="text-xl sm:text-4xl font-black leading-tight">Up to 45% Off Flagship Smartphones & MacBooks</h2>
+              <p class="text-xs sm:text-sm text-gray-300">Apple iPhone 15 Pro, S24 Ultra & M3 MacBooks with Instant 1-Day Dispatch.</p>
+              <button class="amazon-gold-btn text-black font-bold px-4 py-1.5 rounded text-xs mt-2">Shop Electronics Deals ➔</button>
+            </div>
+          </div>
         </div>
-        <button onclick="filterCategory('Laptops')" class="hidden lg:block amazon-gold-btn text-black font-bold px-6 py-2.5 rounded-lg text-sm shadow">Shop Laptop Deals</button>
+
+        <!-- Slide 2: Fashion & Apparel Refresh -->
+        <div onclick="filterCategory('Fashion')" class="min-w-full relative cursor-pointer">
+          <div class="h-48 sm:h-72 md:h-96 w-full bg-gradient-to-r from-rose-950 via-purple-950 to-slate-900 flex items-center px-6 sm:px-16 text-white">
+            <div class="max-w-xl space-y-2">
+              <span class="bg-rose-500 text-white text-[10px] sm:text-xs font-black px-2.5 py-1 rounded uppercase tracking-wide">Wardrobe Refresh Fest</span>
+              <h2 class="text-xl sm:text-4xl font-black leading-tight">50% - 70% Off Top Fashion Brands</h2>
+              <p class="text-xs sm:text-sm text-gray-300">Levi's denim, Pure Kanchipuram Sarees, Nike Running & Italian Leather.</p>
+              <button class="amazon-gold-btn text-black font-bold px-4 py-1.5 rounded text-xs mt-2">Explore Fashion Trends ➔</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Kitchen & Home Makeover -->
+        <div onclick="filterCategory('HomeKitchen')" class="min-w-full relative cursor-pointer">
+          <div class="h-48 sm:h-72 md:h-96 w-full bg-gradient-to-r from-amber-950 via-orange-950 to-slate-900 flex items-center px-6 sm:px-16 text-white">
+            <div class="max-w-xl space-y-2">
+              <span class="bg-amber-500 text-black text-[10px] sm:text-xs font-black px-2.5 py-1 rounded uppercase tracking-wide">Mega Home Makeover</span>
+              <h2 class="text-xl sm:text-4xl font-black leading-tight">Appliances, Cookware & Solid Sheesham Furniture</h2>
+              <p class="text-xs sm:text-sm text-gray-300">Air fryers, Kent Grand Plus RO purifiers and Prestige 750W mixers.</p>
+              <button class="amazon-gold-btn text-black font-bold px-4 py-1.5 rounded text-xs mt-2">Upgrade Your Kitchen ➔</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Grocery & Sports Clearance -->
+        <div onclick="filterCategory('Grocery')" class="min-w-full relative cursor-pointer">
+          <div class="h-48 sm:h-72 md:h-96 w-full bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 flex items-center px-6 sm:px-16 text-white">
+            <div class="max-w-xl space-y-2">
+              <span class="bg-emerald-500 text-white text-[10px] sm:text-xs font-black px-2.5 py-1 rounded uppercase tracking-wide">Pantry & Fitness Super Deals</span>
+              <h2 class="text-xl sm:text-4xl font-black leading-tight">Extra 20% Cashback on Daily Essentials</h2>
+              <p class="text-xs sm:text-sm text-gray-300">Cold-pressed olive oils, California almonds and Yonex graphite rackets.</p>
+              <button class="amazon-gold-btn text-black font-bold px-4 py-1.5 rounded text-xs mt-2">Shop Daily Pantry ➔</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Manual Controls -->
+      <button onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white px-3 py-6 rounded-r text-lg font-bold">‹</button>
+      <button onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white px-3 py-6 rounded-l text-lg font-bold">›</button>
+
+      <!-- Dots Indicators -->
+      <div id="carouselDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+        <span class="h-2 w-6 rounded-full bg-[#febd69]"></span>
+        <span class="h-2 w-2 rounded-full bg-white/60"></span>
+        <span class="h-2 w-2 rounded-full bg-white/60"></span>
+        <span class="h-2 w-2 rounded-full bg-white/60"></span>
       </div>
     </div>
 
     <!-- Product Grid -->
-    <main class="max-w-[1500px] mx-auto px-4 py-4 flex-grow w-full">
-      <div class="flex justify-between items-center border-b pb-2 mb-4">
-        <h2 id="catalogHeader" class="text-base font-bold text-[#0f1111]">Results: Verified Marketplace Stock</h2>
-        <span class="text-xs text-gray-600">Showing genuine verified electronics</span>
+    <main class="max-w-[1550px] mx-auto px-2 sm:px-4 py-4 flex-grow w-full">
+      <div class="flex justify-between items-center border-b pb-2 mb-4 px-1">
+        <div>
+          <h2 id="catalogHeader" class="text-sm sm:text-base font-bold text-[#0f1111]">Results: Verified Marketplace Stock</h2>
+          <p class="text-[11px] text-gray-500">Live catalog sync with multi-seller domestic logistics</p>
+        </div>
+        <span id="productCountBadge" class="text-xs font-semibold text-gray-600">Loading catalog...</span>
       </div>
-      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+      <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"></div>
     </main>
   </div>
 
   <!-- VIEW 2: PRODUCT DETAIL PAGE (PDP) -->
-  <div id="viewPDP" class="hidden flex-grow max-w-7xl mx-auto px-4 py-8 w-full bg-white my-4 border rounded shadow-sm">
-    <button onclick="navigateToHome()" class="text-xs text-blue-700 hover:underline mb-4 font-bold flex items-center gap-1">← Back to Results</button>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+  <div id="viewPDP" class="hidden flex-grow max-w-7xl mx-auto px-3 sm:px-6 py-6 w-full bg-white sm:my-4 sm:border sm:rounded shadow-sm">
+    <button onclick="navigateToHome()" class="text-xs text-blue-700 hover:underline font-bold mb-4 flex items-center gap-1">← Back to Results</button>
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       
-      <div class="md:col-span-5 flex justify-center items-center bg-gray-50 p-6 rounded border">
-        <img id="pdpImage" src="" alt="Product" class="max-h-96 object-contain" />
+      <!-- Image Gallery with Thumbnails -->
+      <div class="md:col-span-5 space-y-3">
+        <div class="flex justify-center items-center bg-gray-50 p-6 rounded border">
+          <img id="pdpImage" src="" alt="Product" class="max-h-80 object-contain" />
+        </div>
+        <div id="pdpThumbnails" class="flex gap-2 justify-center overflow-x-auto"></div>
       </div>
 
+      <!-- Details Column -->
       <div class="md:col-span-4 space-y-3">
         <span id="pdpBrand" class="text-xs uppercase font-bold text-blue-700 tracking-wider"></span>
-        <h1 id="pdpTitle" class="text-xl font-bold text-gray-900 leading-snug"></h1>
+        <h1 id="pdpTitle" class="text-base sm:text-xl font-bold text-gray-900 leading-snug"></h1>
         
         <div class="flex items-center gap-2 text-xs">
           <span id="pdpStars" class="text-amber-500 font-bold text-sm"></span>
@@ -195,10 +268,10 @@
         <div class="text-emerald-700 font-bold">In Stock.</div>
         <div>Delivery to <span id="pdpBuyBoxCity" class="font-bold">New Delhi</span> by <span class="font-bold">Tomorrow 11 AM</span></div>
         
-        <div class="border-t pt-2 mt-2">
+        <div class="border-t pt-2 space-y-1">
           <div class="text-gray-500">Ships from: <span class="font-semibold text-black">Indians Market Fulfillment</span></div>
-          <div class="text-gray-500 mt-1">Sold by: <span id="pdpSellerStore" class="font-bold text-blue-700"></span></div>
-          <div class="text-gray-500 mt-1">Location: <span id="pdpSellerState" class="font-semibold text-black"></span></div>
+          <div class="text-gray-500">Sold by: <span id="pdpSellerStore" class="font-bold text-blue-700"></span></div>
+          <div class="text-gray-500">Location: <span id="pdpSellerState" class="font-semibold text-black"></span></div>
           <div class="mt-2" id="pdpSellerTierBadge"></div>
         </div>
 
@@ -211,18 +284,12 @@
       </div>
     </div>
 
-    <!-- Related Products -->
-    <div class="mt-12 border-t pt-6">
-      <h3 class="font-bold text-base text-gray-900 mb-4">Customers who viewed this item also bought</h3>
-      <div id="relatedProductsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-    </div>
-
-    <!-- Reviews -->
+    <!-- Customer Reviews -->
     <div class="mt-12 border-t pt-6">
       <div class="flex justify-between items-center mb-4">
         <h3 class="font-bold text-base text-gray-900">Customer Reviews & Experiences</h3>
         <button onclick="openReviewModal()" class="bg-gray-100 hover:bg-gray-200 border border-gray-400 text-black px-3 py-1.5 rounded text-xs font-bold">
-          Write a Product Review
+          Write a Review
         </button>
       </div>
       <div id="reviewsContainer" class="space-y-4"></div>
@@ -238,7 +305,6 @@
       </div>
       <button onclick="navigateToHome()" class="text-xs text-blue-700 hover:underline font-bold">← Back to Shopping</button>
     </div>
-
     <div id="ordersListContainer" class="space-y-6"></div>
   </div>
 
@@ -247,7 +313,7 @@
     <nav class="text-xs text-gray-500 mb-4 flex items-center gap-1">
       <a href="javascript:void(0)" onclick="navigateToHome()" class="text-blue-700 hover:underline font-bold">Indians Market Home</a>
       <span>›</span>
-      <span id="footerBreadcrumb" class="font-semibold text-gray-800">Details</span>
+      <span id="footerBreadcrumb">Details</span>
     </nav>
     <h1 id="footerPageTitle" class="text-2xl font-bold text-gray-900 border-b pb-3 mb-4"></h1>
     <div id="footerPageBody" class="text-sm text-gray-700 space-y-4 leading-relaxed"></div>
@@ -271,57 +337,20 @@
         <div class="border rounded-md p-4 bg-gray-50/70">
           <div class="flex justify-between items-center mb-2">
             <span class="font-bold text-sm text-gray-900">📍 1. Select a Delivery Address</span>
-            <button type="button" onclick="toggleNewAddressForm()" class="text-xs text-blue-700 hover:underline font-bold">+ Add a new address</button>
+            <button type="button" onclick="toggleNewAddressForm()" class="text-xs text-blue-700 hover:underline font-bold">+ Add address</button>
           </div>
-
           <div id="savedAddressBook" class="space-y-2"></div>
-
-          <div id="newAddressAccordion" class="hidden mt-4 pt-3 border-t bg-white p-4 rounded border">
-            <h4 class="font-bold text-xs text-gray-800 mb-2">Add a new delivery address</h4>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block font-bold mb-1 text-[11px]">Full Name *</label>
-                <input id="addrNewName" class="w-full border p-2 rounded text-xs" placeholder="e.g. Samir Ali" />
-              </div>
-              <div>
-                <label class="block font-bold mb-1 text-[11px]">Mobile Number *</label>
-                <input id="addrNewPhone" class="w-full border p-2 rounded text-xs" placeholder="10-digit mobile number" />
-              </div>
-              <div class="col-span-2">
-                <label class="block font-bold mb-1 text-[11px]">Address *</label>
-                <input id="addrNewStreet" class="w-full border p-2 rounded text-xs" placeholder="Flat / House No., Landmark" />
-              </div>
-              <div>
-                <label class="block font-bold mb-1 text-[11px]">City *</label>
-                <input id="addrNewCity" class="w-full border p-2 rounded text-xs" placeholder="New Delhi" />
-              </div>
-              <div>
-                <label class="block font-bold mb-1 text-[11px]">PIN Code *</label>
-                <input id="addrNewPincode" class="w-full border p-2 rounded text-xs" placeholder="110001" />
-              </div>
-            </div>
-            <button type="button" onclick="saveNewAddress()" class="mt-3 bg-gray-200 hover:bg-gray-300 font-bold px-4 py-1.5 rounded text-xs">Save and Use Address</button>
-          </div>
         </div>
 
         <div class="border rounded-md p-4 bg-gray-50/70">
           <div class="font-bold text-sm text-gray-900 mb-2">💳 2. Payment Method</div>
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 p-2.5 bg-white border rounded cursor-pointer">
-              <input type="radio" name="payMethod" value="COD" checked class="accent-[#f08804]" />
-              <div>
-                <span class="font-bold text-gray-800 block">Cash on Delivery (Pay at Doorstep)</span>
-                <span class="text-[11px] text-gray-500">Scan UPI QR or pay cash to delivery executive.</span>
-              </div>
-            </label>
-            <label class="flex items-center gap-2 p-2.5 bg-white border rounded cursor-pointer">
-              <input type="radio" name="payMethod" value="IM_PAY" class="accent-[#f08804]" />
-              <div>
-                <span class="font-bold text-gray-800 block">Indians Market Pay / UPI (1-Click Instant Pay)</span>
-                <span class="text-[11px] text-emerald-700 font-semibold">⚡ Instant ₹50 cashback applied</span>
-              </div>
-            </label>
-          </div>
+          <label class="flex items-center gap-2 p-2.5 bg-white border rounded cursor-pointer">
+            <input type="radio" name="payMethod" value="COD" checked class="accent-[#f08804]" />
+            <div>
+              <span class="font-bold text-gray-800 block">Cash on Delivery (Pay at Doorstep)</span>
+              <span class="text-[11px] text-gray-500">Scan UPI QR or pay cash to delivery executive.</span>
+            </div>
+          </label>
         </div>
 
         <div class="border-t pt-3 flex justify-between items-center text-sm">
@@ -342,29 +371,24 @@
   <!-- ORDER SUCCESS MODAL -->
   <div id="orderSuccessModal" class="fixed inset-0 bg-black/75 hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl text-center">
-      <div class="h-16 w-16 bg-emerald-100 text-emerald-600 text-3xl rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">✓</div>
+      <div class="h-16 w-16 bg-emerald-100 text-emerald-600 text-3xl rounded-full flex items-center justify-center mx-auto mb-3 font-bold">✓</div>
       <h3 class="text-xl font-black text-gray-900">Order Placed, Thank You!</h3>
       <p class="text-xs text-gray-600 mt-1">Confirmation email and SMS tracking has been dispatched.</p>
       
       <div class="bg-gray-50 border rounded p-3.5 my-4 text-xs text-left space-y-1.5">
         <div><span class="font-bold text-gray-700">Order ID:</span> <span id="successOrderId" class="font-mono text-blue-700 font-bold"></span></div>
         <div><span class="font-bold text-gray-700">Estimated Delivery:</span> <span class="text-emerald-700 font-bold">Tomorrow by 11:00 AM</span></div>
-        <div><span class="font-bold text-gray-700">Delivering To:</span> <span id="successOrderAddress" class="text-gray-800 font-medium"></span></div>
-        <div><span class="font-bold text-gray-700">Tracking Partner:</span> <span id="successCourierPartner" class="text-gray-800 font-bold">ATS India</span></div>
+        <div><span class="font-bold text-gray-700">Tracking Partner:</span> <span class="text-gray-800 font-bold">Amazon Transportation Services (ATS)</span></div>
       </div>
 
       <div class="flex gap-2">
-        <button onclick="openOrdersPortal(); closeSuccessModal();" class="flex-1 amazon-gold-btn font-bold py-2.5 rounded text-xs shadow">
-          View in "Your Orders"
-        </button>
-        <button onclick="closeSuccessModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 border py-2.5 rounded text-xs font-semibold">
-          Continue Shopping
-        </button>
+        <button onclick="openOrdersPortal(); closeSuccessModal();" class="flex-1 amazon-gold-btn font-bold py-2.5 rounded text-xs shadow">View in Orders</button>
+        <button onclick="closeSuccessModal()" class="flex-1 bg-gray-100 border py-2.5 rounded text-xs font-semibold">Continue Shopping</button>
       </div>
     </div>
   </div>
 
-  <!-- FULL INTERACTIVE CART DRAWER -->
+  <!-- CART MODAL DRAWER -->
   <div id="cartModal" class="fixed inset-0 bg-black/60 hidden z-50 flex justify-end">
     <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6">
       <div>
@@ -386,67 +410,12 @@
     </div>
   </div>
 
-  <!-- LOCATION MODAL -->
-  <div id="locationModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded max-w-sm w-full p-6 shadow-2xl">
-      <h3 class="font-bold text-base mb-3">Choose your delivery location</h3>
-      <div class="space-y-3 text-xs">
-        <input id="pincodeInput" type="text" placeholder="Enter Indian 6-digit pincode" class="w-full border p-2 rounded" />
-        <select id="citySelect" class="w-full border p-2 rounded">
-          <option value="New Delhi 110001">New Delhi (Delhi NCR)</option>
-          <option value="Bengaluru 560001">Bengaluru (Karnataka)</option>
-          <option value="Mumbai 400001">Mumbai (Maharashtra)</option>
-          <option value="Hyderabad 500001">Hyderabad (Telangana)</option>
-          <option value="Kolkata 700001">Kolkata (West Bengal)</option>
-        </select>
-        <button onclick="applyLocation()" class="w-full amazon-gold-btn font-bold py-2 rounded">Apply Delivery Location</button>
-      </div>
-      <button onclick="closeLocationModal()" class="mt-3 text-xs text-gray-500 w-full text-center hover:underline">Cancel</button>
-    </div>
-  </div>
-
-  <!-- REVIEW MODAL -->
-  <div id="reviewModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded max-w-md w-full p-6 shadow-2xl text-xs">
-      <h3 class="font-bold text-base mb-3">Create Review for Item</h3>
-      <form onsubmit="handleReviewSubmit(event)" class="space-y-3">
-        <div>
-          <label class="font-bold block mb-1">Your Name</label>
-          <input id="revAuthor" required class="w-full border p-2 rounded" placeholder="Rohit Kumar" />
-        </div>
-        <div>
-          <label class="font-bold block mb-1">Rating</label>
-          <select id="revStars" class="w-full border p-2 rounded font-bold">
-            <option value="5">★★★★★ (5 Stars)</option>
-            <option value="4">★★★★☆ (4 Stars)</option>
-            <option value="3">★★★☆☆ (3 Stars)</option>
-            <option value="2">★★☆☆☆ (2 Stars)</option>
-            <option value="1">★☆☆☆☆ (1 Star)</option>
-          </select>
-        </div>
-        <div>
-          <label class="font-bold block mb-1">Headline</label>
-          <input id="revHeadline" required class="w-full border p-2 rounded" placeholder="Product experience headline" />
-        </div>
-        <div>
-          <label class="font-bold block mb-1">Review</label>
-          <textarea id="revComment" rows="3" required class="w-full border p-2 rounded" placeholder="Detailed feedback..."></textarea>
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
-          <button type="button" onclick="closeReviewModal()" class="bg-gray-100 px-3 py-1.5 rounded">Cancel</button>
-          <button type="submit" class="amazon-gold-btn font-bold px-4 py-1.5 rounded">Submit Review</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- AUTH MODAL -->
   <div id="authModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white border border-gray-300 rounded-lg max-w-sm w-full p-6 shadow-2xl text-xs">
       <div class="text-center mb-4">
         <span class="text-2xl font-black">Indians<span class="text-[#febd69]">Market</span><span class="text-xs text-amber-600">.in</span></span>
         <h3 id="authModalHeader" class="text-base font-bold text-left mt-3">Sign in to continue</h3>
-        <p id="authModalSubtitle" class="text-[11px] text-gray-500 text-left">Login is required to reserve stock and view orders.</p>
       </div>
       <div class="space-y-3">
         <div>
@@ -458,24 +427,31 @@
           <input id="authPassword" type="password" class="w-full border p-2 rounded focus:outline-none" placeholder="••••••••" />
         </div>
         <button onclick="executeCustomerAuth('login')" class="w-full amazon-gold-btn font-bold py-2 rounded text-xs shadow">Sign In</button>
-        <div class="text-center text-gray-400 text-[11px] my-1">New to Indians Market?</div>
-        <button onclick="executeCustomerAuth('register')" class="w-full bg-gray-100 border border-gray-400 py-2 rounded font-semibold text-xs hover:bg-gray-200">Create your account</button>
+        <button onclick="executeCustomerAuth('register')" class="w-full bg-gray-100 border border-gray-400 py-2 rounded font-semibold text-xs mt-2">Create your account</button>
       </div>
       <button onclick="closeAuthModal()" class="mt-4 text-[11px] text-gray-500 w-full text-center hover:underline">Cancel</button>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- AMAZON ENTERPRISE MULTI-TIER FOOTER -->
-  <!-- ========================================== -->
+  <!-- LOCATION MODAL -->
+  <div id="locationModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded max-w-sm w-full p-6 shadow-2xl">
+      <h3 class="font-bold text-base mb-3">Choose delivery location</h3>
+      <select id="citySelect" class="w-full border p-2 rounded text-xs mb-3">
+        <option value="New Delhi 110001">New Delhi 110001</option>
+        <option value="Bengaluru 560001">Bengaluru 560001</option>
+        <option value="Mumbai 400001">Mumbai 400001</option>
+      </select>
+      <button onclick="applyLocation()" class="w-full amazon-gold-btn font-bold py-2 rounded text-xs">Apply</button>
+    </div>
+  </div>
+
+  <!-- MULTI-TIER FOOTER -->
   <footer class="bg-[#232f3e] text-white mt-16 text-xs">
-    
-    <!-- 1. Back to top -->
     <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-[#37475a] hover:bg-[#485769] py-3.5 text-center cursor-pointer font-bold text-xs transition">
       Back to top
     </div>
 
-    <!-- 2. Primary 4-Column Directory (Amazon Canonical) -->
     <div class="max-w-[1200px] mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
       <div>
         <h4 class="font-bold text-sm text-white mb-3">Get to Know Us</h4>
@@ -483,7 +459,6 @@
           <li><a href="javascript:void(0)" onclick="openFooterPage('About Indians Market')" class="hover:underline">About Indians Market</a></li>
           <li><a href="javascript:void(0)" onclick="openFooterPage('Careers & Engineering')" class="hover:underline">Careers</a></li>
           <li><a href="javascript:void(0)" onclick="openFooterPage('Press Releases & News')" class="hover:underline">Press Releases</a></li>
-          <li><a href="javascript:void(0)" onclick="openFooterPage('Indians Market Science & AI')" class="hover:underline">Indians Market Science</a></li>
         </ul>
       </div>
 
@@ -500,18 +475,13 @@
         <h4 class="font-bold text-sm text-white mb-3">Make Money with Us</h4>
         <ul class="space-y-2 text-gray-300">
           <li><a href="/seller/portal.html" class="hover:underline text-[#febd69] font-bold">Sell on Indians Market</a></li>
-          <li><a href="javascript:void(0)" onclick="openFooterPage('Sell under Brand Accelerator')" class="hover:underline">Sell under Brand Accelerator</a></li>
-          <li><a href="javascript:void(0)" onclick="openFooterPage('Protect and Build Your Brand')" class="hover:underline">Protect and Build Your Brand</a></li>
           <li><a href="javascript:void(0)" onclick="openFooterPage('Fulfillment by Indians Market (FBA)')" class="hover:underline">Fulfillment by Indians Market</a></li>
-          <li><a href="javascript:void(0)" onclick="openFooterPage('Advertise Your Products')" class="hover:underline">Advertise Your Products</a></li>
         </ul>
       </div>
 
       <div>
         <h4 class="font-bold text-sm text-white mb-3">Let Us Help You</h4>
         <ul class="space-y-2 text-gray-300">
-          <li><a href="javascript:void(0)" onclick="openFooterPage('COVID-19 & Delivery Guidelines')" class="hover:underline">COVID-19 and Indians Market</a></li>
-          <li><a href="javascript:void(0)" onclick="openFooterPage('Your Account Management')" class="hover:underline">Your Account</a></li>
           <li><a href="javascript:void(0)" onclick="openOrdersPortal()" class="hover:underline">Returns Centre</a></li>
           <li><a href="javascript:void(0)" onclick="openFooterPage('100% Purchase Protection Policy')" class="hover:underline">100% Purchase Protection</a></li>
           <li><a href="javascript:void(0)" onclick="openFooterPage('Help & Customer Escalation Desk')" class="hover:underline">Help</a></li>
@@ -519,66 +489,34 @@
       </div>
     </div>
 
-    <!-- 3. Country & Brand Line -->
-    <div class="border-t border-gray-700 py-8 flex flex-col sm:flex-row items-center justify-center gap-6">
-      <div class="flex items-center cursor-pointer" onclick="navigateToHome()">
-        <span class="text-xl font-black text-white">Indians<span class="text-[#febd69]">Market</span><span class="text-xs text-[#febd69]">.in</span></span>
-      </div>
-      <div class="flex items-center gap-3 text-xs text-gray-300">
-        <span class="border border-gray-500 px-3 py-1 rounded">🌐 English</span>
-        <span class="border border-gray-500 px-3 py-1 rounded">🇮🇳 India</span>
-      </div>
+    <div class="bg-[#131a22] py-8 text-[11px] text-gray-400 text-center border-t border-gray-800">
+      <p>© 2026, IndiansMarket.in, Inc. or its affiliates. Built with Spring Boot Cloud Architecture.</p>
     </div>
-
-    <!-- 4. Deep Dark Sub-Footer Services Directory (Amazon #131a22) -->
-    <div class="bg-[#131a22] py-8 text-[11px] text-gray-400">
-      <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 sm:grid-cols-4 gap-6 leading-tight">
-        <div onclick="openFooterPage('AbeBooks: Books, art & collectibles')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">AbeBooks</span>
-          Books, art & collectibles
-        </div>
-        <div onclick="openFooterPage('Amazon Web Services: Scalable Cloud Computing Services')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">AWS Cloud</span>
-          Scalable Cloud Computing Services
-        </div>
-        <div onclick="openFooterPage('Audible: Download Audio Books')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">Audible</span>
-          Download Audio Books
-        </div>
-        <div onclick="openFooterPage('IMDb: Movies, TV & Celebrities')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">IMDb</span>
-          Movies, TV & Celebrities
-        </div>
-        <div onclick="openFooterPage('Shopbop: Designer Fashion Brands')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">Shopbop</span>
-          Designer Fashion Brands
-        </div>
-        <div onclick="openFooterPage('Prime Now: 2-Hour Delivery on Everyday Essentials')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">Prime Now</span>
-          2-Hour Delivery on Everyday Items
-        </div>
-        <div onclick="openFooterPage('Indians Market Prime Music: 100 million songs, ad-free')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">Prime Music</span>
-          100 million songs, ad-free
-        </div>
-        <div onclick="openFooterPage('Global Store: Orders Shipped Internationally')" class="cursor-pointer hover:underline">
-          <span class="font-bold text-gray-200 block">Global Store</span>
-          International Delivery to India
-        </div>
-      </div>
-
-      <!-- Legal & Copyright Bar -->
-      <div class="border-t border-gray-800 mt-8 pt-6 text-center text-[11px] space-y-1">
-        <div class="flex justify-center gap-4">
-          <a href="javascript:void(0)" onclick="openFooterPage('Conditions of Use & Sale')" class="hover:underline">Conditions of Use & Sale</a>
-          <a href="javascript:void(0)" onclick="openFooterPage('Privacy Notice & Security Guidelines')" class="hover:underline">Privacy Notice</a>
-          <a href="javascript:void(0)" onclick="openFooterPage('Interest-Based Ads Policy')" class="hover:underline">Interest-Based Ads</a>
-        </div>
-        <p class="text-gray-500">© 2026, IndiansMarket.in, Inc. or its affiliates. Built with Spring Boot Cloud Architecture.</p>
-      </div>
-    </div>
-
   </footer>
+
+  <!-- MOBILE BOTTOM STICKY BAR (Amazon App Style) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#131921] border-t border-gray-700 py-1.5 px-6 flex justify-between items-center z-40 text-white text-[10px]">
+    <div onclick="navigateToHome()" class="flex flex-col items-center cursor-pointer">
+      <span class="text-base">🏠</span>
+      <span>Home</span>
+    </div>
+    <div onclick="openAuthModal('Sign In')" class="flex flex-col items-center cursor-pointer">
+      <span class="text-base">👤</span>
+      <span>Account</span>
+    </div>
+    <a href="/seller/portal.html" class="flex flex-col items-center cursor-pointer text-[#febd69]">
+      <span class="text-base">💼</span>
+      <span>Seller</span>
+    </a>
+    <div onclick="openOrdersPortal()" class="flex flex-col items-center cursor-pointer">
+      <span class="text-base">📦</span>
+      <span>Orders</span>
+    </div>
+    <div onclick="openCart()" class="flex flex-col items-center cursor-pointer">
+      <span class="text-base">🛒</span>
+      <span>Cart</span>
+    </div>
+  </div>
 
   <!-- SCRIPT ENGINE -->
   <script>
@@ -587,32 +525,32 @@
     let currentSelectedProductId = null;
     let selectedDeliveryLocation = "New Delhi 110001";
     let pendingCheckoutTotal = 0;
-    let postAuthAction = null;
+    let currentSlide = 0;
+    const totalSlides = 4;
+    let slideTimer = null;
 
-    let savedAddresses = JSON.parse(localStorage.getItem("im_saved_addresses") || "null") || [
-      {
-        id: 1,
-        name: "Samir Ali (Primary Home)",
-        phone: "+91 9876543210",
-        street: "B-42, Connaught Place, Block C",
-        city: "New Delhi",
-        pincode: "110001"
-      },
-      {
-        id: 2,
-        name: "Samir Ali (Work / Office)",
-        phone: "+91 9811223344",
-        street: "Tech Tower, 5th Floor, Cyber City",
-        city: "Gurugram",
-        pincode: "122002"
-      }
+    let savedAddresses = [
+      { id: 1, name: "Samir Ali (Primary Home)", phone: "+91 9876543210", street: "B-42, Connaught Place, Block C", city: "New Delhi", pincode: "110001" }
     ];
-    let selectedAddressIndex = 0;
 
-    function getActiveUserId() {
-      if (currentAuth && currentAuth.userId) return currentAuth.userId;
-      return 1;
+    function startAutoSlide() {
+      if (slideTimer) clearInterval(slideTimer);
+      slideTimer = setInterval(() => { nextSlide(); }, 4500);
     }
+
+    function updateCarousel() {
+      const track = document.getElementById('carouselTrack');
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      const dots = document.getElementById('carouselDots').children;
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].className = (i === currentSlide) ? "h-2 w-6 rounded-full bg-[#febd69] transition-all duration-300" : "h-2 w-2 rounded-full bg-white/60 transition-all duration-300";
+      }
+    }
+
+    function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+    function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+
+    function getActiveUserId() { return (currentAuth && currentAuth.userId) ? currentAuth.userId : 1; }
 
     function showToast(title, subtitle) {
       const toast = document.getElementById('toastNotification');
@@ -630,7 +568,6 @@
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // UNIVERSAL FOOTER DETAIL PAGE VIEWER
     function openFooterPage(title) {
       document.getElementById('viewStorefront').classList.add('hidden');
       document.getElementById('viewPDP').classList.add('hidden');
@@ -639,21 +576,11 @@
       document.getElementById('footerBreadcrumb').innerText = title;
       document.getElementById('footerPageTitle').innerText = title;
       
-      const body = document.getElementById('footerPageBody');
-      body.innerHTML = `
+      document.getElementById('footerPageBody').innerHTML = `
         <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg text-blue-900 mb-6 font-semibold">
           Official Documentation & Policy Directive: <strong>${title}</strong>
         </div>
-        <p>Welcome to the official <strong>${title}</strong> portal of IndiansMarket.in. Our platform ensures enterprise-level consumer protections, certified domestic fulfillment, and direct integration with Amazon Transportation Services (ATS).</p>
-        <div class="border rounded p-4 bg-gray-50 space-y-2 text-xs">
-          <div class="font-bold text-gray-800">Key Operational Safeguards:</div>
-          <ul class="list-disc pl-5 space-y-1 text-gray-600">
-            <li>Zero-Trust Data Protection under Indian Digital Personal Data Protection Act.</li>
-            <li>Real-time live synchronization between customer order logs and internal warehouse operations.</li>
-            <li>Direct seller compliance audit through verified Silver, Gold, and Diamond tiers.</li>
-          </ul>
-        </div>
-        <p class="text-xs text-gray-500">For active assistance regarding this section, contact our 24x7 Customer Operations Desk or navigate back to the main catalog.</p>
+        <p>Welcome to the official <strong>${title}</strong> portal of IndiansMarket.in. Our marketplace ensures genuine brand products, certified domestic merchants, and direct integration with Amazon Transportation Services (ATS).</p>
       `;
 
       document.getElementById('viewFooterDetail').classList.remove('hidden');
@@ -661,18 +588,18 @@
     }
 
     function filterCategory(cat) {
-      document.getElementById('searchCategory').value = cat;
       navigateToHome();
       loadCatalog(cat);
     }
 
     async function loadCatalog(category = "All") {
       try {
-        const url = category === "All" ? '/api/v1/products' : `/api/v1/products?category=${category}`;
+        const url = category === "All" ? '/api/v1/products' : `/api/v1/products?category=${encodeURIComponent(category)}`;
         const res = await fetch(url);
         catalogCache = await res.json();
         renderCatalog(catalogCache);
         document.getElementById('catalogHeader').innerText = category === "All" ? "Results: Verified Marketplace Stock" : `Results for "${category}"`;
+        document.getElementById('productCountBadge').innerText = `${catalogCache.length} products available`;
       } catch(e) {}
     }
 
@@ -684,29 +611,27 @@
       }
       grid.innerHTML = products.map(p => {
         const discountPercent = p.originalPrice ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 15;
-        const starRatingDisplay = (p.reviewCount && p.reviewCount > 0) ? `★ ${(p.rating || 4.2).toFixed(1)} (${p.reviewCount})` : '<span class="text-gray-400">No reviews yet</span>';
-        
         return `
-          <div class="bg-white border border-gray-200 rounded p-4 flex flex-col justify-between hover:shadow-lg transition cursor-pointer" onclick="openPDP(${p.id})">
+          <div class="bg-white border border-gray-200 rounded p-2 sm:p-3 flex flex-col justify-between hover:shadow-lg transition cursor-pointer" onclick="openPDP(${p.id})">
             <div>
-              <div class="h-48 w-full overflow-hidden mb-2 flex items-center justify-center bg-gray-50 rounded">
-                <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600'}" alt="${p.name}" class="h-full w-full object-contain p-2 hover:scale-105 transition" />
+              <div class="h-36 sm:h-48 w-full overflow-hidden mb-2 flex items-center justify-center bg-gray-50 rounded">
+                <img src="${p.imageUrl}" alt="${p.name}" class="h-full w-full object-contain p-2 hover:scale-105 transition" />
               </div>
-              <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wide">${p.brand || 'Brand'}</span>
-              <h3 class="text-sm font-bold text-[#0f1111] line-clamp-2 hover:text-[#c45500] mt-0.5">${p.name}</h3>
-              <div class="text-xs mt-1 text-amber-600 font-semibold">${starRatingDisplay}</div>
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wide">${p.brand || 'Brand'}</span>
+              <h3 class="text-xs sm:text-sm font-bold text-[#0f1111] line-clamp-2 hover:text-[#c45500] mt-0.5">${p.name}</h3>
+              <div class="text-[11px] mt-1 text-amber-600 font-semibold">★ ${(p.rating || 4.2).toFixed(1)} (${p.reviewCount || 10})</div>
               <div class="mt-2">
                 <div class="flex items-baseline gap-2">
-                  <span class="text-red-700 text-sm font-bold">-${discountPercent}%</span>
-                  <span class="text-2xl font-black text-[#0f1111]">₹${p.price.toFixed(2)}</span>
+                  <span class="text-red-700 text-xs sm:text-sm font-bold">-${discountPercent}%</span>
+                  <span class="text-lg sm:text-2xl font-black text-[#0f1111]">₹${p.price.toFixed(0)}</span>
                 </div>
-                <span class="text-[11px] text-gray-500 line-through">M.R.P.: ₹${(p.originalPrice || (p.price * 1.25)).toFixed(2)}</span>
+                <span class="text-[10px] sm:text-[11px] text-gray-500 line-through">M.R.P.: ₹${(p.originalPrice || (p.price * 1.25)).toFixed(0)}</span>
               </div>
-              <div class="text-[11px] text-gray-700 font-semibold mt-1">FREE Delivery to ${selectedDeliveryLocation}</div>
-              <div class="text-[11px] text-gray-500 mt-1">Seller: <span class="font-bold text-gray-700">${p.sellerStoreName || 'Appario Retail'}</span> (${p.sellerTier || 'SILVER'})</div>
+              <div class="text-[10px] sm:text-[11px] text-gray-700 font-semibold mt-1">FREE 1-Day Delivery</div>
+              <div class="text-[10px] text-gray-500 mt-1 truncate">Seller: <strong>${p.sellerStoreName || 'Appario Retail'}</strong> (${p.sellerTier || 'SILVER'})</div>
             </div>
-            <div class="mt-3 pt-2" onclick="event.stopPropagation()">
-              <button onclick="addToCart(${p.id})" class="w-full amazon-gold-btn text-black font-bold py-2 rounded-full text-xs shadow-sm">Add to Cart</button>
+            <div class="mt-3 pt-1" onclick="event.stopPropagation()">
+              <button onclick="addToCart(${p.id})" class="w-full amazon-gold-btn text-black font-bold py-1.5 sm:py-2 rounded-full text-xs shadow-sm">Add to Cart</button>
             </div>
           </div>
         `;
@@ -718,11 +643,11 @@
       const res = await fetch(`/api/v1/products/${productId}`);
       const p = await res.json();
 
-      document.getElementById('pdpImage').src = p.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600';
-      document.getElementById('pdpBrand').innerText = p.brand || 'Brand';
+      document.getElementById('pdpImage').src = p.imageUrl;
+      document.getElementById('pdpBrand').innerText = p.brand;
       document.getElementById('pdpTitle').innerText = p.name;
-      document.getElementById('pdpStars').innerText = p.reviewCount > 0 ? '★'.repeat(Math.min(5, Math.round(p.rating || 4))) : 'No ratings yet';
-      document.getElementById('pdpRatingCount').innerText = p.reviewCount > 0 ? `${(p.rating || 4.2).toFixed(1)} out of 5 (${p.reviewCount} customer reviews)` : 'Be the first to review this product';
+      document.getElementById('pdpStars').innerText = '★'.repeat(Math.min(5, Math.round(p.rating || 4)));
+      document.getElementById('pdpRatingCount').innerText = `${(p.rating || 4.2).toFixed(1)} (${p.reviewCount || 10} ratings)`;
       
       const discountPercent = p.originalPrice ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 15;
       document.getElementById('pdpDiscount').innerText = `-${discountPercent}%`;
@@ -730,21 +655,21 @@
       document.getElementById('pdpMRP').innerText = `M.R.P.: ₹${(p.originalPrice || (p.price * 1.25)).toFixed(2)}`;
       document.getElementById('pdpBuyBoxPrice').innerText = `₹${p.price.toFixed(2)}`;
 
-      document.getElementById('pdpSpecs').innerText = p.specifications || 'Comprehensive domestic warranty with genuine certified parts.';
-      document.getElementById('pdpDesc').innerText = p.description || '';
+      document.getElementById('pdpSpecs').innerText = p.specifications;
+      document.getElementById('pdpDesc').innerText = p.description;
+      document.getElementById('pdpSellerStore').innerText = p.sellerStoreName || 'Appario Retail';
+      document.getElementById('pdpSellerState').innerText = p.sellerState || 'India Dispatch Hub';
 
-      document.getElementById('pdpSellerStore').innerText = p.sellerStoreName || 'Appario Retail Pvt Ltd';
-      document.getElementById('pdpSellerState').innerText = p.sellerState || 'India';
-      document.getElementById('pdpBuyBoxCity').innerText = selectedDeliveryLocation;
+      // Multi-picture thumbnail gallery
+      const thumbCont = document.getElementById('pdpThumbnails');
+      thumbCont.innerHTML = `
+        <img src="${p.imageUrl}" onclick="document.getElementById('pdpImage').src=this.src" class="h-12 w-12 object-contain border p-1 rounded cursor-pointer border-amber-500" />
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" onclick="document.getElementById('pdpImage').src=this.src" class="h-12 w-12 object-contain border p-1 rounded cursor-pointer hover:border-amber-500" />
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600" onclick="document.getElementById('pdpImage').src=this.src" class="h-12 w-12 object-contain border p-1 rounded cursor-pointer hover:border-amber-500" />
+      `;
 
       const tier = p.sellerTier || 'SILVER';
-      let tierColor = 'bg-gray-400';
-      if (tier === 'GOLD') tierColor = 'bg-amber-500 text-black';
-      if (tier === 'DIAMOND') tierColor = 'bg-blue-600 text-white';
-      document.getElementById('pdpSellerTierBadge').innerHTML = `<span class="px-2 py-0.5 rounded font-extrabold text-[10px] ${tierColor}">Verified ${tier} Merchant</span>`;
-
-      loadRelatedProducts(productId);
-      loadReviews(productId);
+      document.getElementById('pdpSellerTierBadge').innerHTML = `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold text-[10px] border border-amber-300">Verified ${tier} Seller</span>`;
 
       document.getElementById('viewStorefront').classList.add('hidden');
       document.getElementById('viewOrders').classList.add('hidden');
@@ -753,48 +678,11 @@
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    async function loadRelatedProducts(productId) {
-      try {
-        const res = await fetch(`/api/v1/products/${productId}/related`);
-        const related = await res.json();
-        document.getElementById('relatedProductsGrid').innerHTML = related.map(r => `
-          <div class="border p-2.5 rounded hover:shadow bg-white cursor-pointer" onclick="openPDP(${r.id})">
-            <img src="${r.imageUrl}" class="h-32 w-full object-contain mb-2" />
-            <h4 class="text-xs font-bold truncate">${r.name}</h4>
-            <div class="text-xs font-black text-[#b12704] mt-1">₹${r.price.toFixed(2)}</div>
-          </div>
-        `).join('');
-      } catch(e) {}
-    }
-
-    async function loadReviews(productId) {
-      try {
-        const res = await fetch(`/api/v1/products/${productId}/reviews`);
-        const reviews = await res.json();
-        const cont = document.getElementById('reviewsContainer');
-        if (!reviews || !reviews.length) {
-          cont.innerHTML = '<p class="text-gray-500 text-xs italic">No customer reviews yet. Be the first to share your experience!</p>';
-          return;
-        }
-        cont.innerHTML = reviews.map(r => `
-          <div class="border-b pb-3">
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-xs">${r.authorName}</span>
-              <span class="text-amber-500 font-bold">${'★'.repeat(r.ratingStars || 5)}</span>
-              <span class="font-bold text-xs text-gray-900">${r.reviewTitle}</span>
-            </div>
-            <div class="text-[11px] text-amber-800 font-semibold mt-0.5">Verified Purchase · ${r.reviewDate}</div>
-            <p class="text-xs text-gray-700 mt-1">${r.commentText}</p>
-          </div>
-        `).join('');
-      } catch(e) {}
-    }
-
     async function addToCart(id) {
       await fetch(`/api/v1/cart/${getActiveUserId()}/add?productId=${id}&quantity=1`, {method: 'POST'});
       await syncCartBadge();
       const product = catalogCache.find(p => p.id === id);
-      showToast("Added to Cart", product ? product.name.substring(0, 35) + "..." : "Item successfully added.");
+      showToast("Added to Cart", product ? product.name.substring(0, 30) + "..." : "Item added.");
     }
 
     async function syncCartBadge() {
@@ -820,24 +708,15 @@
         list.innerHTML = '<p class="text-gray-500 text-center py-12 text-xs font-semibold">Your Indians Market Cart is empty.</p>';
         document.getElementById('cartTotalDisplay').innerText = `₹0.00`;
         pendingCheckoutTotal = 0;
-        document.getElementById('cartCountBadge').innerText = "0";
       } else {
         list.innerHTML = cart.items.map(i => `
-          <div class="flex gap-3 items-center bg-gray-50 border p-3 rounded-lg text-xs">
-            <img src="${i.product.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600'}" class="h-14 w-14 object-contain border bg-white p-1 rounded" />
+          <div class="flex gap-3 items-center bg-gray-50 border p-3 rounded text-xs">
+            <img src="${i.product.imageUrl}" class="h-14 w-14 object-contain border bg-white p-1 rounded" />
             <div class="flex-1 min-w-0">
               <h4 class="font-bold text-gray-900 truncate">${i.product.name}</h4>
-              <div class="font-bold text-[#b12704] mt-0.5">₹${(i.product.price).toFixed(2)}</div>
-              <div class="flex items-center gap-2 mt-2">
-                <div class="flex items-center border border-gray-300 rounded bg-white shadow-sm">
-                  <button onclick="changeItemQty(${i.product.id}, -1)" class="px-2 py-0.5 text-gray-700 hover:bg-gray-100 font-black">-</button>
-                  <span class="px-2.5 py-0.5 font-bold border-l border-r text-gray-900">${i.quantity}</span>
-                  <button onclick="changeItemQty(${i.product.id}, 1)" class="px-2 py-0.5 text-gray-700 hover:bg-gray-100 font-black">+</button>
-                </div>
-                <button onclick="deleteItemFromCart(${i.product.id})" class="text-xs text-red-600 hover:text-red-800 font-bold ml-2">🗑 Delete</button>
-              </div>
+              <div class="font-bold text-[#b12704]">₹${(i.product.price).toFixed(2)}</div>
             </div>
-            <span class="font-extrabold text-[#b12704] self-start">₹${(i.quantity * i.product.price).toFixed(2)}</span>
+            <span class="font-bold">Qty: ${i.quantity}</span>
           </div>
         `).join('');
 
@@ -845,43 +724,23 @@
         const totalData = await totalRes.json();
         pendingCheckoutTotal = totalData.totalAmount || 0;
         document.getElementById('cartTotalDisplay').innerText = `₹${pendingCheckoutTotal.toFixed(2)}`;
-        syncCartBadge();
       }
-    }
-
-    async function changeItemQty(productId, delta) {
-      await fetch(`/api/v1/cart/${getActiveUserId()}/update-quantity?productId=${productId}&delta=${delta}`, { method: 'POST' });
-      renderCartDrawer();
-    }
-
-    async function deleteItemFromCart(productId) {
-      await fetch(`/api/v1/cart/${getActiveUserId()}/remove/${productId}`, { method: 'DELETE' });
-      renderCartDrawer();
     }
 
     function closeCart() { document.getElementById('cartModal').classList.add('hidden'); }
 
     function handleBuyNowFlow(productId) {
       if (!currentAuth || !currentAuth.email) {
-        postAuthAction = () => executeBuyNowAfterAuth(productId);
         openAuthModal("Sign in to complete order");
         return;
       }
-      executeBuyNowAfterAuth(productId);
-    }
-
-    async function executeBuyNowAfterAuth(productId) {
-      await fetch(`/api/v1/cart/${getActiveUserId()}/add?productId=${productId}&quantity=1`, {method: 'POST'});
-      await syncCartBadge();
-      const prod = catalogCache.find(p => p.id === productId);
-      pendingCheckoutTotal = prod ? prod.price : 29990;
+      addToCart(productId);
       launchCheckoutModal();
     }
 
     function proceedToCheckoutFromCart() {
       closeCart();
       if (!currentAuth || !currentAuth.email) {
-        postAuthAction = () => launchCheckoutModal();
         openAuthModal("Sign in to proceed to checkout");
         return;
       }
@@ -890,41 +749,12 @@
 
     function renderAddressBook() {
       const container = document.getElementById('savedAddressBook');
-      container.innerHTML = savedAddresses.map((addr, idx) => `
-        <label class="flex items-start gap-3 p-3 bg-white border rounded cursor-pointer hover:border-amber-500">
-          <input type="radio" name="deliveryAddressChoice" value="${idx}" ${idx === selectedAddressIndex ? 'checked' : ''} onchange="selectedAddressIndex = ${idx}" class="mt-1 accent-[#f08804]" />
-          <div>
-            <div class="font-bold text-gray-900">${addr.name} <span class="text-[11px] font-normal text-gray-500">(${addr.phone})</span></div>
-            <div class="text-[11px] text-gray-600 mt-0.5">${addr.street}, ${addr.city} - ${addr.pincode}</div>
-            <span class="text-[10px] text-emerald-700 font-bold block mt-0.5">✓ Eligible for FREE Prime Delivery</span>
-          </div>
-        </label>
+      container.innerHTML = savedAddresses.map(addr => `
+        <div class="p-2.5 bg-white border rounded text-xs">
+          <div class="font-bold text-gray-900">${addr.name}</div>
+          <div class="text-[11px] text-gray-600">${addr.street}, ${addr.city} - ${addr.pincode}</div>
+        </div>
       `).join('');
-    }
-
-    function toggleNewAddressForm() {
-      document.getElementById('newAddressAccordion').classList.toggle('hidden');
-    }
-
-    function saveNewAddress() {
-      const name = document.getElementById('addrNewName').value.trim();
-      const phone = document.getElementById('addrNewPhone').value.trim();
-      const street = document.getElementById('addrNewStreet').value.trim();
-      const city = document.getElementById('addrNewCity').value.trim();
-      const pincode = document.getElementById('addrNewPincode').value.trim();
-
-      if (!name || !phone || !street || !city || !pincode) {
-        showToast("Address Error", "Please fill in all address fields.");
-        return;
-      }
-
-      const newAddr = { id: Date.now(), name, phone, street, city, pincode };
-      savedAddresses.unshift(newAddr);
-      localStorage.setItem("im_saved_addresses", JSON.stringify(savedAddresses));
-      selectedAddressIndex = 0;
-      renderAddressBook();
-      toggleNewAddressForm();
-      showToast("Address Saved", "New address selected for this delivery.");
     }
 
     function launchCheckoutModal() {
@@ -935,57 +765,41 @@
     function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
     async function confirmOrderPlacement() {
-      const currentAddr = savedAddresses[selectedAddressIndex];
-      const payMethod = document.querySelector('input[name="payMethod"]:checked') ? 
-                        document.querySelector('input[name="payMethod"]:checked').value : 'COD';
-
+      const addr = savedAddresses[0];
       const payload = {
         userEmail: (currentAuth && currentAuth.email) ? currentAuth.email : '',
-        shippingName: currentAddr.name,
-        shippingPhone: currentAddr.phone,
-        shippingAddress: currentAddr.street,
-        shippingCity: currentAddr.city,
-        shippingPincode: currentAddr.pincode,
-        paymentMethod: payMethod
+        shippingName: addr.name,
+        shippingPhone: addr.phone,
+        shippingAddress: addr.street,
+        shippingCity: addr.city,
+        shippingPincode: addr.pincode,
+        paymentMethod: 'COD'
       };
 
-      try {
-        const res = await fetch(`/api/v1/orders/checkout/${getActiveUserId()}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+      const res = await fetch(`/api/v1/orders/checkout/${getActiveUserId()}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          showToast("Order Failed", data.error || "Could not place order");
-          return;
-        }
-
+      const data = await res.json();
+      if (res.ok) {
         closeCheckoutModal();
-
         document.getElementById('successOrderId').innerText = data.orderNumber;
-        document.getElementById('successOrderAddress').innerText = `${currentAddr.street}, ${currentAddr.city} - ${currentAddr.pincode}`;
-        document.getElementById('successCourierPartner').innerText = data.courierPartner || "Amazon Transportation Services (ATS)";
-        
         document.getElementById('orderSuccessModal').classList.remove('hidden');
-        document.getElementById('cartCountBadge').innerText = "0";
-        await syncCartBadge();
-      } catch(err) {
-        showToast("Network Error", "Unable to connect to order server.");
+        syncCartBadge();
+      } else {
+        alert(data.error || "Order failed");
       }
     }
 
     function closeSuccessModal() {
       document.getElementById('orderSuccessModal').classList.add('hidden');
       navigateToHome();
-      loadCatalog();
     }
 
     async function openOrdersPortal() {
       if (!currentAuth || !currentAuth.email) {
-        postAuthAction = () => openOrdersPortal();
         openAuthModal("Sign in to view Your Orders");
         return;
       }
@@ -998,90 +812,26 @@
 
       const res = await fetch(`/api/v1/orders/user/${getActiveUserId()}`);
       const orders = await res.json();
-      renderOrdersList(orders);
-    }
-
-    function renderOrdersList(orders) {
+      
       const container = document.getElementById('ordersListContainer');
       if (!orders || !orders.length) {
-        container.innerHTML = `
-          <div class="bg-white border rounded p-12 text-center">
-            <h3 class="font-bold text-base text-gray-800">No Orders Placed Yet</h3>
-            <p class="text-xs text-gray-500 mt-1">Looks like you haven't placed an order yet.</p>
-            <button onclick="navigateToHome()" class="mt-4 amazon-gold-btn font-bold px-6 py-2 rounded text-xs">Start Shopping</button>
-          </div>
-        `;
+        container.innerHTML = '<div class="bg-white border rounded p-12 text-center font-bold text-gray-500">No orders placed yet.</div>';
         return;
       }
 
-      container.innerHTML = orders.map(o => {
-        const orderDate = new Date(o.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-        
-        let step = 1;
-        if (o.status === 'SHIPPED') step = 2;
-        if (o.status === 'OUT_FOR_DELIVERY') step = 3;
-        if (o.status === 'DELIVERED') step = 4;
-
-        return `
-          <div class="bg-white border border-gray-300 rounded-lg shadow-sm overflow-hidden text-xs">
-            <div class="bg-[#f0f2f2] p-4 flex flex-wrap justify-between items-center text-gray-600 gap-2 border-b">
-              <div class="flex gap-6">
-                <div>
-                  <span class="text-[10px] uppercase font-bold block">Order Placed</span>
-                  <span class="font-bold text-gray-900">${orderDate}</span>
-                </div>
-                <div>
-                  <span class="text-[10px] uppercase font-bold block">Total</span>
-                  <span class="font-bold text-[#b12704]">₹${o.totalAmount.toFixed(2)}</span>
-                </div>
-                <div>
-                  <span class="text-[10px] uppercase font-bold block">Ship To</span>
-                  <span class="font-bold text-blue-700 cursor-pointer" title="${o.shippingAddress}">${o.shippingName} ▾</span>
-                </div>
-              </div>
-              <div class="text-right">
-                <span class="text-[10px] uppercase font-bold block">Order # ${o.orderNumber}</span>
-                <span class="text-[11px] text-blue-700 hover:underline cursor-pointer">View Invoice</span>
-              </div>
-            </div>
-
-            <div class="p-6">
-              <div class="mb-6">
-                <div class="flex justify-between items-center font-bold text-xs mb-2">
-                  <span class="${step >= 1 ? 'text-emerald-700' : 'text-gray-400'}">✓ Order Placed</span>
-                  <span class="${step >= 2 ? 'text-emerald-700' : 'text-gray-400'}">✓ Shipped (${o.courierPartner || 'ATS'})</span>
-                  <span class="${step >= 3 ? 'text-emerald-700' : 'text-gray-400'}">● Out for Delivery</span>
-                  <span class="${step >= 4 ? 'text-emerald-700' : 'text-gray-400'}">Delivered</span>
-                </div>
-                <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden flex">
-                  <div class="bg-emerald-600 h-full transition-all duration-500" style="width: ${step === 1 ? '25%' : step === 2 ? '50%' : step === 3 ? '75%' : '100%'}"></div>
-                </div>
-                <div class="flex justify-between items-center text-[11px] text-gray-500 mt-1.5">
-                  <span>AWB: <strong class="font-mono text-gray-800">${o.trackingNumber || 'PENDING'}</strong></span>
-                  <span class="text-emerald-800 font-bold">${step === 4 ? 'Package Delivered' : 'Estimated Delivery: Tomorrow 11 AM'}</span>
-                </div>
-              </div>
-
-              <div class="space-y-3 border-t pt-4">
-                ${o.items.map(item => `
-                  <div class="flex items-center gap-4">
-                    <img src="${item.product.imageUrl || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600'}" class="h-16 w-16 object-contain border p-1 rounded" />
-                    <div class="flex-1">
-                      <h4 class="font-bold text-gray-900">${item.product.name}</h4>
-                      <p class="text-gray-500 text-[11px]">Quantity: ${item.quantity} | Price: ₹${item.price.toFixed(2)}</p>
-                      <button onclick="openPDP(${item.product.id})" class="text-[11px] text-blue-700 hover:underline mt-1 font-semibold">Buy it again</button>
-                    </div>
-                    <button class="bg-gray-100 border px-3 py-1.5 rounded font-bold hover:bg-gray-200 text-xs">Track Package</button>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
+      container.innerHTML = orders.map(o => `
+        <div class="bg-white border rounded p-4 text-xs space-y-2">
+          <div class="flex justify-between font-bold border-b pb-2">
+            <span>Order #${o.orderNumber}</span>
+            <span class="text-[#b12704]">₹${o.totalAmount.toFixed(2)}</span>
           </div>
-        `;
-      }).join('');
+          <div class="text-emerald-700 font-bold">Status: ${o.status || 'SHIPPED'} · ATS India</div>
+          <div class="text-gray-600">AWB Tracking: ${o.trackingNumber || 'ATS-IN-8890'}</div>
+        </div>
+      `).join('');
     }
 
-    function openAuthModal(title = "Sign In") {
+    function openAuthModal(title) {
       document.getElementById('authModalHeader').innerText = title;
       document.getElementById('authModal').classList.remove('hidden');
     }
@@ -1091,99 +841,33 @@
       const email = document.getElementById('authEmail').value.trim();
       const password = document.getElementById('authPassword').value.trim();
 
-      if (!email || !password) {
-        showToast("Auth Error", "Please enter both email and password.");
-        return;
-      }
-
-      try {
-        const res = await fetch(`/api/v1/auth/${type}`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email, password, accountType: 'CUSTOMER'})
-        });
-        const data = await res.json();
-        if (res.ok) {
-          currentAuth = data;
-          localStorage.setItem("im_customer_auth", JSON.stringify(data));
-          syncAuthUI();
-          closeAuthModal();
-          showToast("Signed In", `Welcome back, ${data.email.split('@')[0]}!`);
-          if (postAuthAction) {
-            postAuthAction();
-            postAuthAction = null;
-          }
-        } else {
-          showToast("Auth Failed", data.message || "Invalid credentials");
-        }
-      } catch(e) {
-        showToast("Error", "Server connection error.");
-      }
-    }
-
-    function logoutSession() {
-      localStorage.removeItem("im_customer_auth");
-      currentAuth = null;
-      syncAuthUI();
-      location.reload();
-    }
-
-    function syncAuthUI() {
-      const greeting = document.getElementById('userGreeting');
-      const boxOut = document.getElementById('authBoxLoggedOut');
-      const boxIn = document.getElementById('authBoxLoggedIn');
-
-      if (currentAuth && currentAuth.email) {
-        greeting.innerText = "Hello, " + currentAuth.email.split('@')[0];
-        boxOut.classList.add('hidden');
-        boxIn.classList.remove('hidden');
-        document.getElementById('profileEmail').innerText = currentAuth.email;
-      } else {
-        greeting.innerText = "Hello, sign in";
-        boxOut.classList.remove('hidden');
-        boxIn.classList.add('hidden');
-      }
-    }
-
-    function openLocationModal() { document.getElementById('locationModal').classList.remove('hidden'); }
-    function closeLocationModal() { document.getElementById('locationModal').classList.add('hidden'); }
-    function applyLocation() {
-      const pin = document.getElementById('pincodeInput').value.trim();
-      const city = document.getElementById('citySelect').value;
-      selectedDeliveryLocation = pin ? `Pincode ${pin}` : city;
-      document.getElementById('locHeaderCity').innerText = `Deliver to ${selectedDeliveryLocation}`;
-      closeLocationModal();
-      loadCatalog();
-      showToast("Location Updated", `Delivering to ${selectedDeliveryLocation}`);
-    }
-
-    function openReviewModal() { document.getElementById('reviewModal').classList.remove('hidden'); }
-    function closeReviewModal() { document.getElementById('reviewModal').classList.add('hidden'); }
-    async function handleReviewSubmit(e) {
-      e.preventDefault();
-      const body = {
-        authorName: document.getElementById('revAuthor').value,
-        ratingStars: parseInt(document.getElementById('revStars').value),
-        reviewTitle: document.getElementById('revHeadline').value,
-        commentText: document.getElementById('revComment').value
-      };
-      await fetch(`/api/v1/products/${currentSelectedProductId}/reviews`, {
+      const res = await fetch(`/api/v1/auth/${type}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body)
+        body: JSON.stringify({email, password, accountType: 'CUSTOMER'})
       });
-      closeReviewModal();
-      showToast("Review Submitted", "Your review is live!");
-      openPDP(currentSelectedProductId);
+      const data = await res.json();
+
+      if (res.ok) {
+        currentAuth = data;
+        localStorage.setItem("im_customer_auth", JSON.stringify(data));
+        closeAuthModal();
+        location.reload();
+      } else {
+        alert(data.message || "Auth error");
+      }
     }
 
-    function handleSearchInput() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
+    function handleSearchInput(val) {
+      const q = val.toLowerCase();
       renderCatalog(catalogCache.filter(p => p.name.toLowerCase().includes(q) || (p.brand && p.brand.toLowerCase().includes(q))));
     }
 
     window.onload = () => {
-      syncAuthUI();
+      if (currentAuth && currentAuth.email) {
+        document.getElementById('userGreeting').innerText = "Hello, " + currentAuth.email.split('@')[0];
+      }
+      startAutoSlide();
       loadCatalog();
       syncCartBadge();
     };
