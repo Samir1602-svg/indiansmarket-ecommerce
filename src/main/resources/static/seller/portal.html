@@ -2,186 +2,302 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Amazon Seller Central - Indians Market Merchant Studio</title>
+  <title>Amazon Seller Central: India Marketplace</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>body { font-family: 'Open Sans', Arial, sans-serif; }</style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-[#eaeded] min-h-screen flex flex-col text-xs text-[#0f1111]">
 
-  <nav class="bg-[#232f3e] text-white px-6 py-3 flex justify-between items-center shadow">
+  <!-- HEADER -->
+  <header class="bg-[#131921] text-white px-6 py-3 flex justify-between items-center shadow-md">
     <div class="flex items-center gap-3">
-      <span class="text-xl font-black text-[#febd69]">SellerCentral</span>
-      <span class="text-xs bg-gray-700 px-2 py-0.5 rounded text-gray-300">India Marketplace</span>
+      <span class="text-xl font-bold tracking-tight text-[#febd69]">Seller<span class="text-white">Central</span></span>
+      <span class="bg-gray-800 text-gray-300 text-[10px] px-2 py-0.5 rounded border border-gray-700">India Marketplace</span>
     </div>
-    <div class="flex items-center gap-4 text-xs">
-      <span id="sellerNavInfo" class="text-gray-300">Not Logged In</span>
-      <button onclick="logoutSeller()" class="text-red-400 hover:underline">Log Out</button>
-      <a href="/" class="bg-gray-700 hover:bg-gray-600 px-2.5 py-1 rounded">Visit Buyer Store</a>
+    <div class="flex items-center gap-4">
+      <span id="merchantStatus" class="text-gray-400">Not Logged In</span>
+      <button id="logoutBtn" onclick="logoutMerchant()" class="text-red-400 hover:underline hidden">Log Out</button>
+      <a href="/" class="amazon-gold-btn bg-[#febd69] hover:bg-[#f3a847] text-black font-bold px-3 py-1.5 rounded">Visit Buyer Store</a>
     </div>
-  </nav>
+  </header>
 
-  <div id="sellerLoginSection" class="max-w-md mx-auto mt-16 bg-white p-8 rounded border shadow">
-    <h2 class="text-lg font-bold text-gray-900 mb-4">Seller Central Merchant Login</h2>
-    <form onsubmit="handleSellerLogin(event)" class="space-y-3 text-xs">
+  <!-- AUTHENTICATION CONTAINER (LOGIN + REGISTER TABS) -->
+  <div id="authBox" class="max-w-md mx-auto my-12 bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
+    <!-- Tab Switcher -->
+    <div class="flex border-b border-gray-200 mb-6">
+      <button id="tabLoginBtn" onclick="switchTab('login')" class="flex-1 pb-2 font-bold text-sm text-[#0f1111] border-b-2 border-[#f08804]">Merchant Sign In</button>
+      <button id="tabRegisterBtn" onclick="switchTab('register')" class="flex-1 pb-2 font-bold text-sm text-gray-500 border-b-2 border-transparent">Register New Seller</button>
+    </div>
+
+    <!-- 1. SIGN IN FORM -->
+    <form id="loginForm" onsubmit="handleMerchantAuth(event, 'login')" class="space-y-4">
       <div>
-        <label class="font-bold block mb-1">Registered Merchant Email</label>
-        <input id="sellerEmail" type="email" required value="appario@indiansmarket.in" class="w-full border p-2 rounded" />
+        <label class="block font-bold mb-1">Registered Merchant Email</label>
+        <input id="loginEmail" type="email" value="appario@indiansmarket.in" required class="w-full border border-gray-400 p-2.5 rounded focus:outline-none focus:border-amber-500" />
       </div>
       <div>
-        <label class="font-bold block mb-1">Password</label>
-        <input id="sellerPassword" type="password" required value="Carelon16sep" class="w-full border p-2 rounded" />
+        <label class="block font-bold mb-1">Password</label>
+        <input id="loginPassword" type="password" value="Carelon16sep" required class="w-full border border-gray-400 p-2.5 rounded focus:outline-none focus:border-amber-500" />
       </div>
-      <button type="submit" class="w-full bg-[#f0c14b] border border-[#a88734] font-bold py-2 rounded mt-2">Access Merchant Studio</button>
+      <button type="submit" class="w-full bg-[#f0c14b] hover:bg-[#eeb933] border border-[#a88734] font-bold py-2.5 rounded shadow-sm text-black">
+        Access Merchant Studio
+      </button>
+    </form>
+
+    <!-- 2. NEW SELLER REGISTRATION FORM -->
+    <form id="registerForm" onsubmit="handleMerchantAuth(event, 'register')" class="space-y-4 hidden">
+      <div>
+        <label class="block font-bold mb-1">Legal Company / Store Name *</label>
+        <input id="regStoreName" required placeholder="e.g. Hawk Electronics Store" class="w-full border border-gray-400 p-2.5 rounded focus:outline-none focus:border-amber-500" />
+      </div>
+      <div>
+        <label class="block font-bold mb-1">Business Email ID *</label>
+        <input id="regEmail" type="email" required placeholder="seller@hawkstore.in" class="w-full border border-gray-400 p-2.5 rounded focus:outline-none focus:border-amber-500" />
+      </div>
+      <div>
+        <label class="block font-bold mb-1">Create Password *</label>
+        <input id="regPassword" type="password" required placeholder="••••••••" class="w-full border border-gray-400 p-2.5 rounded focus:outline-none focus:border-amber-500" />
+      </div>
+      <div>
+        <label class="block font-bold mb-1">Warehouse Dispatch State *</label>
+        <select id="regState" class="w-full border border-gray-400 p-2.5 rounded">
+          <option value="Delhi NCR">Delhi NCR</option>
+          <option value="Maharashtra">Maharashtra (Mumbai Hub)</option>
+          <option value="Karnataka">Karnataka (Bengaluru Hub)</option>
+          <option value="Telangana">Telangana (Hyderabad Hub)</option>
+        </select>
+      </div>
+      <button type="submit" class="w-full bg-[#f0c14b] hover:bg-[#eeb933] border border-[#a88734] font-bold py-2.5 rounded shadow-sm text-black">
+        Register & Launch Storefront
+      </button>
     </form>
   </div>
 
-  <div id="sellerDashboardSection" class="hidden max-w-6xl mx-auto py-8 px-4">
-    <div class="bg-white border rounded p-6 shadow-sm mb-6 flex justify-between items-center">
+  <!-- DASHBOARD AFTER LOGIN -->
+  <main id="dashboard" class="hidden max-w-6xl mx-auto p-6 w-full space-y-6">
+    <div class="bg-white p-5 rounded-lg border shadow-sm flex justify-between items-center">
       <div>
-        <span id="merchantTierBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-blue-600 text-white">DIAMOND TIER</span>
-        <h1 class="text-2xl font-bold mt-1" id="storeNameText">Merchant Storefront</h1>
+        <div class="flex items-center gap-2">
+          <h2 id="merchantStoreTitle" class="text-xl font-bold text-gray-900">Merchant Store</h2>
+          <span id="tierBadge" class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded border border-amber-300">SILVER TIER</span>
+        </div>
+        <p id="merchantEmailDisplay" class="text-gray-500 mt-1"></p>
       </div>
-      <button onclick="toggleListingModal()" class="bg-[#f0c14b] border border-[#a88734] font-bold px-4 py-2 rounded text-xs shadow-sm">+ Add a Product (List New Inventory)</button>
+      <button onclick="document.getElementById('productListingModal').classList.remove('hidden')" class="bg-[#f0c14b] hover:bg-[#eeb933] border border-[#a88734] font-bold px-4 py-2 rounded text-black">
+        + List New Product
+      </button>
     </div>
 
-    <div class="bg-white border rounded p-6 shadow-sm">
-      <h3 class="font-bold text-sm text-gray-800 mb-3">Live Inventory Ledger</h3>
-      <table class="w-full text-xs text-left border">
+    <!-- Live SKU Table -->
+    <div class="bg-white border rounded-lg p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-3">Your Live Catalog SKUs</h3>
+      <table class="w-full text-left border">
         <thead class="bg-gray-100 text-gray-700">
           <tr>
-            <th class="p-3">Title</th>
-            <th class="p-3">ASIN</th>
-            <th class="p-3">SKU</th>
-            <th class="p-3">Price (₹)</th>
-            <th class="p-3">Stock Units</th>
-            <th class="p-3">Customer Rating</th>
+            <th class="p-2.5 border-b">ID</th>
+            <th class="p-2.5 border-b">Product Name</th>
+            <th class="p-2.5 border-b">Category</th>
+            <th class="p-2.5 border-b">Price (INR)</th>
+            <th class="p-2.5 border-b">Stock Status</th>
           </tr>
         </thead>
-        <tbody id="sellerInventoryBody"></tbody>
+        <tbody id="sellerProductsTable">
+          <tr><td colspan="5" class="p-4 text-center text-gray-400">Loading catalog...</td></tr>
+        </tbody>
       </table>
     </div>
-  </div>
+  </main>
 
-  <!-- ADD PRODUCT MODAL -->
-  <div id="listingModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded max-w-lg w-full p-6 text-xs max-h-[90vh] overflow-y-auto">
-      <h3 class="text-base font-bold mb-3">Seller Listing Form</h3>
-      <form onsubmit="handleNewListing(event)" class="space-y-3">
-        <input id="pName" required placeholder="Product Title" class="w-full border p-2 rounded" />
-        <div class="grid grid-cols-2 gap-2">
-          <input id="pBrand" required placeholder="Brand" class="border p-2 rounded" />
-          <select id="pCategory" class="border p-2 rounded">
-            <option value="Electronics">Electronics</option>
-            <option value="Audio">Audio</option>
-            <option value="Laptops">Laptops</option>
-            <option value="Wearables">Wearables</option>
-            <option value="Gaming">Gaming</option>
-            <option value="Photography">Photography</option>
-          </select>
+  <!-- MODAL: ADD PRODUCT -->
+  <div id="productListingModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="font-bold text-sm">Add New Product to Indians Market Catalog</h3>
+        <button onclick="document.getElementById('productListingModal').classList.add('hidden')" class="text-gray-400 hover:text-black font-bold text-xl">&times;</button>
+      </div>
+      <form onsubmit="handleCreateProduct(event)" class="space-y-3">
+        <div>
+          <label class="block font-bold mb-1">Product Title *</label>
+          <input id="pName" required placeholder="e.g. Boat Rockerz 450 Bluetooth Headphones" class="w-full border p-2 rounded" />
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <input id="pPrice" type="number" step="0.01" required placeholder="Price (₹)" class="border p-2 rounded" />
-          <input id="pStock" type="number" required placeholder="Stock Qty" class="border p-2 rounded" />
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Category *</label>
+            <select id="pCategory" class="w-full border p-2 rounded">
+              <option value="Electronics">Electronics</option>
+              <option value="Audio">Audio</option>
+              <option value="Laptops">Laptops</option>
+              <option value="Wearables">Wearables</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Photography">Photography</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Price (₹) *</label>
+            <input id="pPrice" type="number" step="0.01" required placeholder="1499.00" class="w-full border p-2 rounded" />
+          </div>
         </div>
-        <input id="pImg" required placeholder="Direct Image URL" class="w-full border p-2 rounded" />
-        <input id="pSpecs" placeholder="Specifications" class="w-full border p-2 rounded" />
-        <textarea id="pDesc" rows="2" placeholder="Description" class="w-full border p-2 rounded"></textarea>
-        <div class="flex justify-end gap-2">
-          <button type="button" onclick="toggleListingModal()" class="bg-gray-200 px-3 py-1.5 rounded">Cancel</button>
-          <button type="submit" class="bg-[#f0c14b] font-bold px-4 py-1.5 rounded">Publish Stock</button>
+        <div>
+          <label class="block font-bold mb-1">Image URL</label>
+          <input id="pImageUrl" placeholder="https://images.unsplash.com/..." class="w-full border p-2 rounded" />
         </div>
+        <div>
+          <label class="block font-bold mb-1">Brand Name</label>
+          <input id="pBrand" placeholder="Boat, Sony, Apple" class="w-full border p-2 rounded" />
+        </div>
+        <button type="submit" class="w-full bg-[#f0c14b] hover:bg-[#eeb933] font-bold py-2 rounded text-black mt-2">Publish SKU to Marketplace</button>
       </form>
     </div>
   </div>
 
   <script>
-    let sellerSession = JSON.parse(localStorage.getItem("im_seller_token") || "null");
+    let activeSeller = JSON.parse(localStorage.getItem('im_seller_session') || 'null');
 
-    async function handleSellerLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('sellerEmail').value;
-      const password = document.getElementById('sellerPassword').value;
-
-      const res = await fetch('/api/v1/auth/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password})
-      });
-      const data = await res.json();
-      if (res.ok && (data.role === 'ROLE_SELLER' || data.role === 'ROLE_ADMIN')) {
-        sellerSession = data;
-        localStorage.setItem("im_seller_token", JSON.stringify(data));
-        renderSellerPortal();
+    function switchTab(mode) {
+      if (mode === 'login') {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('registerForm').classList.add('hidden');
+        document.getElementById('tabLoginBtn').className = 'flex-1 pb-2 font-bold text-sm text-[#0f1111] border-b-2 border-[#f08804]';
+        document.getElementById('tabRegisterBtn').className = 'flex-1 pb-2 font-bold text-sm text-gray-500 border-b-2 border-transparent';
       } else {
-        alert("Merchant credentials unauthorized.");
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('registerForm').classList.remove('hidden');
+        document.getElementById('tabRegisterBtn').className = 'flex-1 pb-2 font-bold text-sm text-[#0f1111] border-b-2 border-[#f08804]';
+        document.getElementById('tabLoginBtn').className = 'flex-1 pb-2 font-bold text-sm text-gray-500 border-b-2 border-transparent';
       }
     }
 
-    function renderSellerPortal() {
-      if (!sellerSession) return;
-      document.getElementById('sellerLoginSection').classList.add('hidden');
-      document.getElementById('sellerDashboardSection').classList.remove('hidden');
-      document.getElementById('storeNameText').innerText = sellerSession.storeName || "Merchant Store";
-      document.getElementById('sellerNavInfo').innerText = sellerSession.email;
-      loadSellerItems();
-    }
-
-    async function loadSellerItems() {
-      const res = await fetch(`/api/v1/products/seller/${sellerSession.userId}`, {
-        headers: { 'Authorization': 'Bearer ' + (sellerSession.token || '') }
-      });
-      const prods = await res.json();
-      document.getElementById('sellerInventoryBody').innerHTML = prods.map(p => `
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-3 font-bold">${p.name}</td>
-          <td class="p-3 font-mono">${p.asin || 'IM-ASIN'}</td>
-          <td class="p-3 font-mono">${p.sku || 'SKU-VAL'}</td>
-          <td class="p-3 font-bold text-gray-900">₹${p.price.toFixed(2)}</td>
-          <td class="p-3 font-bold ${p.stockQuantity < 5 ? 'text-red-600' : 'text-emerald-700'}">${p.stockQuantity}</td>
-          <td class="p-3 font-bold text-amber-600">★ ${p.rating || 4.2}</td>
-        </tr>
-      `).join('');
-    }
-
-    function toggleListingModal() { document.getElementById('listingModal').classList.toggle('hidden'); }
-
-    async function handleNewListing(e) {
+    async function handleMerchantAuth(e, type) {
       e.preventDefault();
+      let payload = {};
+
+      if (type === 'login') {
+        payload = {
+          email: document.getElementById('loginEmail').value.trim(),
+          password: document.getElementById('loginPassword').value.trim()
+        };
+      } else {
+        payload = {
+          accountType: 'SELLER',
+          storeName: document.getElementById('regStoreName').value.trim(),
+          email: document.getElementById('regEmail').value.trim(),
+          password: document.getElementById('regPassword').value.trim(),
+          sellerState: document.getElementById('regState').value
+        };
+      }
+
+      const endpoint = type === 'login' ? '/api/v1/auth/login' : '/api/v1/auth/register';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          activeSeller = data;
+          if (type === 'register') {
+            activeSeller.storeName = payload.storeName;
+          }
+          localStorage.setItem('im_seller_session', JSON.stringify(activeSeller));
+          initializeDashboard();
+        } else {
+          alert(data.message || "Authentication failed.");
+        }
+      } catch(err) {
+        alert("Server communication error.");
+      }
+    }
+
+    function initializeDashboard() {
+      if (!activeSeller || !activeSeller.email) return;
+
+      document.getElementById('authBox').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+      document.getElementById('merchantStatus').innerText = "Logged in: " + activeSeller.email;
+
+      const storeTitle = activeSeller.storeName || (activeSeller.email.split('@')[0].toUpperCase() + " Store");
+      document.getElementById('merchantStoreTitle').innerText = storeTitle;
+      document.getElementById('merchantEmailDisplay').innerText = activeSeller.email;
+      loadSellerProducts();
+    }
+
+    async function loadSellerProducts() {
+      try {
+        const storeName = activeSeller.storeName || activeSeller.email.split('@')[0];
+        const res = await fetch(`/api/v1/products/seller?sellerStoreName=${encodeURIComponent(storeName)}`);
+        const prods = await res.json();
+        const tbody = document.getElementById('sellerProductsTable');
+        
+        if (!prods || !prods.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="p-8 text-center text-gray-500 font-bold">
+                No active listings yet in your inventory.<br>
+                <span class="text-xs font-normal text-gray-400">Click <strong>"+ List New Product"</strong> above to launch your first SKU on Indians Market!</span>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = prods.map(p => `
+          <tr class="border-b hover:bg-gray-50">
+            <td class="p-2.5 font-mono">${p.id}</td>
+            <td class="p-2.5 font-bold text-gray-900">${p.name}</td>
+            <td class="p-2.5 text-gray-600">${p.category || 'Electronics'}</td>
+            <td class="p-2.5 font-bold text-emerald-700">₹${p.price.toFixed(2)}</td>
+            <td class="p-2.5 text-emerald-600 font-bold">✓ Active in Storefront</td>
+          </tr>
+        `).join('');
+      } catch(e) {
+        console.error("Failed to load seller catalog:", e);
+      }
+    }
+
+    async function handleCreateProduct(e) {
+      e.preventDefault();
+      const storeName = activeSeller.storeName || activeSeller.email.split('@')[0];
       const body = {
         name: document.getElementById('pName').value,
-        brand: document.getElementById('pBrand').value,
         category: document.getElementById('pCategory').value,
         price: parseFloat(document.getElementById('pPrice').value),
-        stockQuantity: parseInt(document.getElementById('pStock').value),
-        imageUrl: document.getElementById('pImg').value,
-        specifications: document.getElementById('pSpecs').value,
-        description: document.getElementById('pDesc').value
+        imageUrl: document.getElementById('pImageUrl').value || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600',
+        brand: document.getElementById('pBrand').value || 'Generic',
+        sellerStoreName: storeName,
+        sellerTier: activeSeller.permission || 'SILVER'
       };
 
-      const res = await fetch(`/api/v1/products/seller/${sellerSession.userId}/add`, {
+      const res = await fetch('/api/v1/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + (sellerSession.token || '')
+          'Authorization': 'Bearer ' + (activeSeller.token || '')
         },
         body: JSON.stringify(body)
       });
+
       if (res.ok) {
-        alert("Stock successfully pushed to Indians Market catalog!");
-        toggleListingModal();
-        loadSellerItems();
-      } else {
-        alert("Listing creation failed.");
+        alert("Product published live on Indians Market!");
+        document.getElementById('productListingModal').classList.add('hidden');
+        loadSellerProducts();
       }
     }
 
-    function logoutSeller() {
-      localStorage.removeItem("im_seller_token");
+    function logoutMerchant() {
+      localStorage.removeItem('im_seller_session');
+      activeSeller = null;
       location.reload();
     }
 
-    if (sellerSession) renderSellerPortal();
+    window.onload = () => {
+      if (activeSeller && activeSeller.email) {
+        initializeDashboard();
+      }
+    };
   </script>
 </body>
 </html>
