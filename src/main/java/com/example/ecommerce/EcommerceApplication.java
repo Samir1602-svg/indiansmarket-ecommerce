@@ -1,11 +1,12 @@
 package com.example.ecommerce;
 
-import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-class EcommerceApplicationTests {
+@SpringBootApplication
+public class EcommerceApplication {
 
-    @Test
-    void contextLoads() {
-        // Dummy test to prevent build failures during production deployment
+    public static void main(String[] args) {
+        SpringApplication.run(EcommerceApplication.class, args);
     }
 }
