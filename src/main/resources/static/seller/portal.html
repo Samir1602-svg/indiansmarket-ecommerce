@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Amazon Seller Central - Indians Market Merchant Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Open Sans', Arial, sans-serif; }</style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <nav class="bg-[#232f3e] text-white px-6 py-3 flex justify-between items-center shadow">
+    <div class="flex items-center gap-3">
+      <span class="text-xl font-black text-[#febd69]">SellerCentral</span>
+      <span class="text-xs bg-gray-700 px-2 py-0.5 rounded text-gray-300">India Marketplace</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs">
+      <span id="sellerNavInfo" class="text-gray-300">Not Logged In</span>
+      <button onclick="logoutSeller()" class="text-red-400 hover:underline">Log Out</button>
+      <a href="/" class="bg-gray-700 hover:bg-gray-600 px-2.5 py-1 rounded">Visit Buyer Store</a>
+    </div>
+  </nav>
+
+  <div id="sellerLoginSection" class="max-w-md mx-auto mt-16 bg-white p-8 rounded border shadow">
+    <h2 class="text-lg font-bold text-gray-900 mb-4">Seller Central Merchant Login</h2>
+    <form onsubmit="handleSellerLogin(event)" class="space-y-3 text-xs">
+      <div>
+        <label class="font-bold block mb-1">Registered Merchant Email</label>
+        <input id="sellerEmail" type="email" required value="appario@indiansmarket.in" class="w-full border p-2 rounded" />
+      </div>
+      <div>
+        <label class="font-bold block mb-1">Password</label>
+        <input id="sellerPassword" type="password" required value="Carelon16sep" class="w-full border p-2 rounded" />
+      </div>
+      <button type="submit" class="w-full bg-[#f0c14b] border border-[#a88734] font-bold py-2 rounded mt-2">Access Merchant Studio</button>
+    </form>
+  </div>
+
+  <div id="sellerDashboardSection" class="hidden max-w-6xl mx-auto py-8 px-4">
+    <div class="bg-white border rounded p-6 shadow-sm mb-6 flex justify-between items-center">
+      <div>
+        <span id="merchantTierBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-blue-600 text-white">DIAMOND TIER</span>
+        <h1 class="text-2xl font-bold mt-1" id="storeNameText">Merchant Storefront</h1>
+      </div>
+      <button onclick="toggleListingModal()" class="bg-[#f0c14b] border border-[#a88734] font-bold px-4 py-2 rounded text-xs shadow-sm">+ Add a Product (List New Inventory)</button>
+    </div>
+
+    <div class="bg-white border rounded p-6 shadow-sm">
+      <h3 class="font-bold text-sm text-gray-800 mb-3">Live Inventory Ledger</h3>
+      <table class="w-full text-xs text-left border">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="p-3">Title</th>
+            <th class="p-3">ASIN</th>
+            <th class="p-3">SKU</th>
+            <th class="p-3">Price (₹)</th>
+            <th class="p-3">Stock Units</th>
+            <th class="p-3">Customer Rating</th>
+          </tr>
+        </thead>
+        <tbody id="sellerInventoryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD PRODUCT MODAL -->
+  <div id="listingModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded max-w-lg w-full p-6 text-xs max-h-[90vh] overflow-y-auto">
+      <h3 class="text-base font-bold mb-3">Seller Listing Form</h3>
+      <form onsubmit="handleNewListing(event)" class="space-y-3">
+        <input id="pName" required placeholder="Product Title" class="w-full border p-2 rounded" />
+        <div class="grid grid-cols-2 gap-2">
+          <input id="pBrand" required placeholder="Brand" class="border p-2 rounded" />
+          <select id="pCategory" class="border p-2 rounded">
+            <option value="Electronics">Electronics</option>
+            <option value="Audio">Audio</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Wearables">Wearables</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Photography">Photography</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="pPrice" type="number" step="0.01" required placeholder="Price (₹)" class="border p-2 rounded" />
+          <input id="pStock" type="number" required placeholder="Stock Qty" class="border p-2 rounded" />
+        </div>
+        <input id="pImg" required placeholder="Direct Image URL" class="w-full border p-2 rounded" />
+        <input id="pSpecs" placeholder="Specifications" class="w-full border p-2 rounded" />
+        <textarea id="pDesc" rows="2" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="toggleListingModal()" class="bg-gray-200 px-3 py-1.5 rounded">Cancel</button>
+          <button type="submit" class="bg-[#f0c14b] font-bold px-4 py-1.5 rounded">Publish Stock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let sellerSession = JSON.parse(localStorage.getItem("im_seller_token") || "null");
+
+    async function handleSellerLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('sellerEmail').value;
+      const password = document.getElementById('sellerPassword').value;
+
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password})
+      });
+      const data = await res.json();
+      if (res.ok && (data.role === 'ROLE_SELLER' || data.role === 'ROLE_ADMIN')) {
+        sellerSession = data;
+        localStorage.setItem("im_seller_token", JSON.stringify(data));
+        renderSellerPortal();
+      } else {
+        alert("Merchant credentials unauthorized.");
+      }
+    }
+
+    function renderSellerPortal() {
+      if (!sellerSession) return;
+      document.getElementById('sellerLoginSection').classList.add('hidden');
+      document.getElementById('sellerDashboardSection').classList.remove('hidden');
+      document.getElementById('storeNameText').innerText = sellerSession.storeName || "Merchant Store";
+      document.getElementById('sellerNavInfo').innerText = sellerSession.email;
+      loadSellerItems();
+    }
+
+    async function loadSellerItems() {
+      const res = await fetch(`/api/v1/products/seller/${sellerSession.userId}`, {
+        headers: { 'Authorization': 'Bearer ' + (sellerSession.token || '') }
+      });
+      const prods = await res.json();
+      document.getElementById('sellerInventoryBody').innerHTML = prods.map(p => `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="p-3 font-bold">${p.name}</td>
+          <td class="p-3 font-mono">${p.asin || 'IM-ASIN'}</td>
+          <td class="p-3 font-mono">${p.sku || 'SKU-VAL'}</td>
+          <td class="p-3 font-bold text-gray-900">₹${p.price.toFixed(2)}</td>
+          <td class="p-3 font-bold ${p.stockQuantity < 5 ? 'text-red-600' : 'text-emerald-700'}">${p.stockQuantity}</td>
+          <td class="p-3 font-bold text-amber-600">★ ${p.rating || 4.2}</td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleListingModal() { document.getElementById('listingModal').classList.toggle('hidden'); }
+
+    async function handleNewListing(e) {
+      e.preventDefault();
+      const body = {
+        name: document.getElementById('pName').value,
+        brand: document.getElementById('pBrand').value,
+        category: document.getElementById('pCategory').value,
+        price: parseFloat(document.getElementById('pPrice').value),
+        stockQuantity: parseInt(document.getElementById('pStock').value),
+        imageUrl: document.getElementById('pImg').value,
+        specifications: document.getElementById('pSpecs').value,
+        description: document.getElementById('pDesc').value
+      };
+
+      const res = await fetch(`/api/v1/products/seller/${sellerSession.userId}/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (sellerSession.token || '')
+        },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        alert("Stock successfully pushed to Indians Market catalog!");
+        toggleListingModal();
+        loadSellerItems();
+      } else {
+        alert("Listing creation failed.");
+      }
+    }
+
+    function logoutSeller() {
+      localStorage.removeItem("im_seller_token");
+      location.reload();
+    }
+
+    if (sellerSession) renderSellerPortal();
+  </script>
+</body>
+</html>

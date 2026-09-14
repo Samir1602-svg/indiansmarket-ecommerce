@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Indians Market Master Operations Central (AWS Midway Protocol)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'JetBrains Mono', monospace; }</style>
+</head>
+<body class="bg-[#0a0e17] text-gray-200 min-h-screen">
+
+  <div class="border-b border-gray-800 bg-[#111827] px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <div class="h-3 w-3 rounded-full bg-emerald-500 animate-ping"></div>
+      <span class="text-sm font-bold tracking-wider text-red-400">AWS-STYLE INTERNAL OPERATIONS CENTRAL [MIDWAY RESTRICTED]</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs">
+      <span id="operatorRoleBadge" class="bg-gray-800 px-2.5 py-1 rounded text-gray-300 font-bold hidden"></span>
+      <span id="gatewayStatus" class="text-yellow-500">GATEWAY_CHALLENGE_REQUIRED</span>
+      <button id="logoutBtn" onclick="logoutOps()" class="text-red-400 hover:underline font-bold hidden">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- ZERO-TRUST HARDWARE TOKEN CHALLENGE -->
+  <div id="hardwareChallengeSection" class="max-w-md mx-auto mt-20 bg-[#111827] border border-gray-800 p-8 rounded-xl shadow-2xl">
+    <h2 class="text-base font-bold text-white mb-2">Ops Security Token Required</h2>
+    <p class="text-xs text-gray-400 mb-4">Enter master operator token to verify cryptographic clearance.</p>
+    <form onsubmit="handleTokenHandshake(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="block text-gray-500 mb-1">Corporate Midway Passkey</label>
+        <input id="opsKeyInput" type="password" value="IM-OPS-SEC-KEY-9942" class="w-full bg-[#1e293b] border border-gray-700 p-2.5 rounded text-white focus:outline-none" />
+      </div>
+      <div>
+        <label class="block text-gray-500 mb-1">Operator / Staff Email</label>
+        <input id="opsEmailInput" type="email" value="owner@indiansmarket.in" class="w-full bg-[#1e293b] border border-gray-700 p-2.5 rounded text-white focus:outline-none" />
+      </div>
+      <div>
+        <label class="block text-gray-500 mb-1">Master Password</label>
+        <input id="opsPasswordInput" type="password" value="Carelon16sep" class="w-full bg-[#1e293b] border border-gray-700 p-2.5 rounded text-white focus:outline-none" />
+      </div>
+      <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded transition">Authenticate Terminal Access</button>
+    </form>
+  </div>
+
+  <!-- COMMAND CENTER CONSOLE -->
+  <div id="commandCenter" class="hidden max-w-7xl mx-auto py-8 px-4 space-y-6">
+    
+    <!-- STATS BAR -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div class="bg-[#111827] border border-gray-800 p-4 rounded"><span class="text-xs text-gray-400">REGISTERED SELLERS</span><h3 id="statSellers" class="text-2xl font-bold text-amber-400">0</h3></div>
+      <div class="bg-[#111827] border border-gray-800 p-4 rounded"><span class="text-xs text-gray-400">ACTIVE ORDERS</span><h3 id="statOrders" class="text-2xl font-bold text-emerald-400">0</h3></div>
+      <div class="bg-[#111827] border border-gray-800 p-4 rounded"><span class="text-xs text-gray-400">OPS STAFF TEAM</span><h3 id="statStaff" class="text-2xl font-bold text-blue-400">0</h3></div>
+      <div class="bg-[#111827] border border-gray-800 p-4 rounded"><span class="text-xs text-gray-400">LIVE MARKETPLACE SKUs</span><h3 id="statProds" class="text-2xl font-bold text-white">0</h3></div>
+    </div>
+
+    <!-- MODULE 1: LOGISTICS & FULFILLMENT DISPATCH DESK -->
+    <div id="moduleLogistics" class="bg-[#111827] border-2 border-emerald-600/50 p-6 rounded-xl shadow-xl">
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-emerald-400 font-black">⚡ FBA Hub Logistics Dispatch Desk</span>
+          <h3 class="text-base font-bold text-white mt-0.5">Live Customer Orders & Tracking Pipeline</h3>
+        </div>
+        <button onclick="loadLogisticsOrders()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-1.5 rounded font-bold transition">🔄 Refresh Orders</button>
+      </div>
+      <p class="text-xs text-gray-400 mb-4">Assign courier partner (ATS, BlueDart, Delhivery), update AWB tracking, and advance dispatch status.</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border border-gray-800">
+          <thead class="bg-gray-800 text-gray-300">
+            <tr>
+              <th class="p-3">Order #</th>
+              <th class="p-3">Recipient & Address Snapshot</th>
+              <th class="p-3">Amount</th>
+              <th class="p-3">Courier Partner</th>
+              <th class="p-3">AWB Tracking #</th>
+              <th class="p-3">Current Status</th>
+              <th class="p-3">Action</th>
+            </tr>
+          </thead>
+          <tbody id="logisticsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MODULE 2: STAFF PROVISIONING (Super Admin Only) -->
+    <div id="moduleStaff" class="bg-[#111827] border border-gray-800 p-6 rounded-xl">
+      <h3 class="text-sm font-bold text-white mb-1">Backend Staff Rights Provisioning Engine</h3>
+      <p class="text-xs text-gray-400 mb-4">Authorize operator roles with strict permission fencing.</p>
+      <form id="staffForm" onsubmit="handleCreateStaff(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+        <input id="staffName" required placeholder="Staff Full Name" class="bg-[#1e293b] border border-gray-700 p-2 rounded text-white focus:outline-none" />
+        <input id="staffEmail" type="email" required placeholder="staff.id@indiansmarket.in" class="bg-[#1e293b] border border-gray-700 p-2 rounded text-white focus:outline-none" />
+        <input id="staffPassword" type="password" required placeholder="Temporary Password" class="bg-[#1e293b] border border-gray-700 p-2 rounded text-white focus:outline-none" />
+        <select id="staffPermission" class="bg-[#1e293b] border border-gray-700 p-2 rounded text-white focus:outline-none">
+          <option value="CATALOG_ACCESS">Catalog Manager (Delist/Audit)</option>
+          <option value="DISPUTE_ACCESS">Dispute & Customer Support</option>
+          <option value="LOGISTICS_DISPATCH">Logistics Hub Lead (Orders Only)</option>
+          <option value="FULL_CONTROL">Super Admin Operations Executive</option>
+        </select>
+        <button type="submit" class="md:col-span-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded transition">Authorize Staff Member</button>
+      </form>
+    </div>
+
+    <!-- MODULE 3: SELLER TIER GOVERNANCE (Super Admin Only) -->
+    <div id="moduleSellers" class="bg-[#111827] border border-gray-800 p-6 rounded-xl">
+      <h3 class="text-sm font-bold text-white mb-3">Merchant Tier Governance (Silver, Gold, Diamond)</h3>
+      <table class="w-full text-xs text-left border border-gray-800">
+        <thead class="bg-gray-800 text-gray-300">
+          <tr>
+            <th class="p-3">Merchant Store</th>
+            <th class="p-3">Official Email</th>
+            <th class="p-3">Assigned Tier</th>
+            <th class="p-3">Action</th>
+          </tr>
+        </thead>
+        <tbody id="sellersTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- MODULE 4: ACTIVE CATALOG DELIST (Catalog Manager & Super Admin) -->
+    <div id="moduleCatalog" class="bg-[#111827] border border-gray-800 p-6 rounded-xl">
+      <h3 class="text-sm font-bold text-white mb-3">Active Catalog Inspection & Immediate Delist</h3>
+      <div class="max-h-64 overflow-y-auto">
+        <table class="w-full text-xs text-left border border-gray-800">
+          <thead class="bg-gray-800 text-gray-300 sticky top-0">
+            <tr>
+              <th class="p-2">ID</th>
+              <th class="p-2">Product Name</th>
+              <th class="p-2">Seller</th>
+              <th class="p-2">Price</th>
+              <th class="p-2">Action</th>
+            </tr>
+          </thead>
+          <tbody id="delistTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let opsToken = null;
+    let currentUserPermission = "FULL_CONTROL";
+    const MASTER_CORP_KEY = "IM-OPS-SEC-KEY-9942";
+
+    async function handleTokenHandshake(e) {
+      e.preventDefault();
+      const enteredKey = document.getElementById('opsKeyInput').value.trim();
+      const email = document.getElementById('opsEmailInput').value.trim();
+
+      if (enteredKey !== MASTER_CORP_KEY) {
+        alert("SECURITY ALERT: Cryptographic midway token rejected.");
+        return;
+      }
+
+      try {
+        // Direct Midway cryptographic clearance
+        const res = await fetch('/api/v1/internal/midway/handshake', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ passkey: enteredKey, email: email })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+          opsToken = data.token;
+          currentUserPermission = (data.role === 'ROLE_ADMIN') ? "FULL_CONTROL" : (data.permission || "CATALOG_ACCESS");
+
+          document.getElementById('hardwareChallengeSection').classList.add('hidden');
+          document.getElementById('commandCenter').classList.remove('hidden');
+          document.getElementById('gatewayStatus').innerText = "MIDWAY_AUTHENTICATED";
+          document.getElementById('gatewayStatus').className = "text-xs text-emerald-400 font-bold";
+          
+          const badge = document.getElementById('operatorRoleBadge');
+          badge.innerText = `${email.split('@')[0].toUpperCase()} [${currentUserPermission}]`;
+          badge.classList.remove('hidden');
+          document.getElementById('logoutBtn').classList.remove('hidden');
+
+          applyRoleFencing(currentUserPermission);
+          loadDashboardData();
+          loadLogisticsOrders();
+        } else {
+          alert("Authentication Failed: " + (data.message || "Unauthorized"));
+        }
+      } catch (err) {
+        alert("Server error connecting to Midway Auth Gate.");
+      }
+    }
+
+    // ROLE BASED ACCESS CONTROL (RBAC) UI FENCING
+    function applyRoleFencing(permission) {
+      const modLogistics = document.getElementById('moduleLogistics');
+      const modStaff = document.getElementById('moduleStaff');
+      const modSellers = document.getElementById('moduleSellers');
+      const modCatalog = document.getElementById('moduleCatalog');
+
+      // Reset
+      modLogistics.classList.remove('hidden');
+      modStaff.classList.remove('hidden');
+      modSellers.classList.remove('hidden');
+      modCatalog.classList.remove('hidden');
+
+      if (permission === 'CATALOG_ACCESS') {
+        // Catalog Manager only sees catalog inspection & delist
+        modLogistics.classList.add('hidden');
+        modStaff.classList.add('hidden');
+        modSellers.classList.add('hidden');
+      } else if (permission === 'LOGISTICS_DISPATCH') {
+        // Logistics staff only sees logistics desk
+        modStaff.classList.add('hidden');
+        modSellers.classList.add('hidden');
+        modCatalog.classList.add('hidden');
+      } else if (permission === 'DISPUTE_ACCESS') {
+        // Dispute staff only inspects orders & catalog
+        modStaff.classList.add('hidden');
+        modSellers.classList.add('hidden');
+      }
+      // FULL_CONTROL keeps everything visible
+    }
+
+    async function loadDashboardData() {
+      const res = await fetch('/api/v1/admin/dashboard-stats', {
+        headers: { 'Authorization': 'Bearer ' + (opsToken || '') }
+      });
+      const data = await res.json();
+
+      document.getElementById('statSellers').innerText = data.totalSellers || 0;
+      document.getElementById('statStaff').innerText = data.totalStaff || 0;
+      document.getElementById('statProds').innerText = data.totalProducts || 0;
+
+      document.getElementById('sellersTableBody').innerHTML = (data.sellersList || []).map(s => `
+        <tr class="border-b border-gray-800">
+          <td class="p-3 font-bold text-white">${s.storeName || s.email}</td>
+          <td class="p-3 text-gray-400">${s.email}</td>
+          <td class="p-3 font-bold text-amber-400">${s.sellerTier || 'SILVER'}</td>
+          <td class="p-3">
+            <select onchange="changeTier(${s.id}, this.value)" class="bg-[#1e293b] border border-gray-700 text-white p-1 rounded">
+              <option value="SILVER" ${s.sellerTier === 'SILVER' ? 'selected' : ''}>Silver</option>
+              <option value="GOLD" ${s.sellerTier === 'GOLD' ? 'selected' : ''}>Gold</option>
+              <option value="DIAMOND" ${s.sellerTier === 'DIAMOND' ? 'selected' : ''}>Diamond</option>
+            </select>
+          </td>
+        </tr>
+      `).join('');
+
+      const prodRes = await fetch('/api/v1/products');
+      const prods = await prodRes.json();
+      document.getElementById('delistTableBody').innerHTML = prods.map(p => `
+        <tr class="border-b border-gray-800">
+          <td class="p-2">${p.id}</td>
+          <td class="p-2 font-bold text-white">${p.name}</td>
+          <td class="p-2 text-gray-400">${p.sellerStoreName || 'Appario Retail'}</td>
+          <td class="p-2 text-emerald-400">₹${p.price.toFixed(2)}</td>
+          <td class="p-2">
+            <button onclick="delistProduct(${p.id})" class="bg-red-700 hover:bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">DELIST</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadLogisticsOrders() {
+      try {
+        const res = await fetch('/api/v1/orders/admin/all');
+        const orders = await res.json();
+        document.getElementById('statOrders').innerText = orders.length;
+
+        if (!orders || !orders.length) {
+          document.getElementById('logisticsTableBody').innerHTML = `
+            <tr><td colspan="7" class="p-6 text-center text-gray-500 font-bold">No customer orders placed yet.</td></tr>
+          `;
+          return;
+        }
+
+        document.getElementById('logisticsTableBody').innerHTML = orders.map(o => `
+          <tr class="border-b border-gray-800 hover:bg-gray-900/50">
+            <td class="p-3 font-mono font-bold text-blue-400">${o.orderNumber || ('IM-ORD-' + o.id)}</td>
+            <td class="p-3">
+              <div class="font-bold text-white">${o.shippingName || 'Customer'}</div>
+              <div class="text-[11px] text-gray-400">${o.shippingAddress || ''}, ${o.shippingCity || ''} - ${o.shippingPincode || ''}</div>
+              <div class="text-[10px] text-gray-500">Ph: ${o.shippingPhone || 'N/A'}</div>
+            </td>
+            <td class="p-3 font-bold text-emerald-400">₹${(o.totalAmount || 0).toFixed(2)}</td>
+            <td class="p-3">
+              <select id="courier_${o.id}" class="bg-[#1e293b] border border-gray-700 text-white p-1 rounded">
+                <option value="Amazon Transportation Services (ATS)" ${o.courierPartner && o.courierPartner.includes('ATS') ? 'selected' : ''}>Amazon ATS</option>
+                <option value="BlueDart Express" ${o.courierPartner && o.courierPartner.includes('BlueDart') ? 'selected' : ''}>BlueDart Express</option>
+                <option value="Delhivery Surface" ${o.courierPartner && o.courierPartner.includes('Delhivery') ? 'selected' : ''}>Delhivery Surface</option>
+              </select>
+            </td>
+            <td class="p-3">
+              <input id="awb_${o.id}" value="${o.trackingNumber || ''}" class="bg-[#1e293b] border border-gray-700 p-1 rounded font-mono text-white w-32" />
+            </td>
+            <td class="p-3">
+              <select id="status_${o.id}" class="bg-[#1e293b] border border-gray-700 font-bold p-1 rounded text-amber-400">
+                <option value="ORDER_PLACED" ${o.status === 'ORDER_PLACED' ? 'selected' : ''}>ORDER_PLACED</option>
+                <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>SHIPPED (IN_TRANSIT)</option>
+                <option value="OUT_FOR_DELIVERY" ${o.status === 'OUT_FOR_DELIVERY' ? 'selected' : ''}>OUT_FOR_DELIVERY</option>
+                <option value="DELIVERED" ${o.status === 'DELIVERED' ? 'selected' : ''}>DELIVERED</option>
+              </select>
+            </td>
+            <td class="p-3">
+              <button onclick="saveOrderStatus(${o.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded font-bold transition">Update Dispatch</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {}
+    }
+
+    async function saveOrderStatus(orderId) {
+      const status = document.getElementById(`status_${orderId}`).value;
+      const courierPartner = document.getElementById(`courier_${orderId}`).value;
+      const trackingNumber = document.getElementById(`awb_${orderId}`).value.trim();
+
+      const res = await fetch(`/api/v1/orders/admin/${orderId}/update-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status, courierPartner, trackingNumber })
+      });
+
+      if (res.ok) {
+        alert("✓ Logistics status & AWB updated. Customer timeline updated live!");
+        loadLogisticsOrders();
+      }
+    }
+
+    async function changeTier(sellerId, tier) {
+      await fetch(`/api/v1/admin/seller/${sellerId}/tier?tier=${tier}`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + (opsToken || '') }
+      });
+      alert("Seller tier updated!");
+      loadDashboardData();
+    }
+
+    async function delistProduct(id) {
+      if (!confirm("Are you sure you want to delist this item?")) return;
+      await fetch(`/api/v1/admin/products/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + (opsToken || '') }
+      });
+      alert("Product delisted from customer marketplace.");
+      loadDashboardData();
+    }
+
+    // FORM RESET ON SUBMIT
+    async function handleCreateStaff(e) {
+      e.preventDefault();
+      const body = {
+        name: document.getElementById('staffName').value.trim(),
+        email: document.getElementById('staffEmail').value.trim(),
+        password: document.getElementById('staffPassword').value.trim(),
+        permission: document.getElementById('staffPermission').value
+      };
+
+      const res = await fetch('/api/v1/admin/staff/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + (opsToken || '')
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(`✓ Staff ID provisioned: ${body.email} with role [${body.permission}]`);
+        // CLEAR FORM INPUTS COMPLETELY
+        document.getElementById('staffForm').reset();
+        loadDashboardData();
+      } else {
+        alert(data.message || "Failed to create staff.");
+      }
+    }
+
+    function logoutOps() {
+      opsToken = null;
+      location.reload();
+    }
+  </script>
+</body>
+</html>
